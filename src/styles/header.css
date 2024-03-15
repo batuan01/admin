@@ -1,0 +1,39 @@
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.button-setting:hover .setting-hover {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotateLeft {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  50% {
+    transform: rotateZ(-30deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+
+@keyframes rotateRight {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  50% {
+    transform: rotateZ(30deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+.button-notification:hover .notification-hover {
+  animation: rotateLeft 0.5s linear, rotateRight 0.5s linear infinite;
+}
