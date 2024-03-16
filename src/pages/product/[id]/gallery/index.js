@@ -3,7 +3,7 @@ import { UploadImage } from "../../../../components/molecules/UploadImage";
 import { ConvertFirebase } from "../../../../components/utils/firebase";
 import Notification from "../../../../components/atoms/Notification";
 
-import { useParams, useRouter, useSearchParams } from "next/router";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
@@ -27,7 +27,7 @@ const GalleryPage = ({ isNew = true }) => {
   const [dataAllImage, setDataAllImage] = useState();
   const [isReload, setIsReload] = useState(false);
   const router = useRouter();
-  const params = useParams();
+  const params = router.query;
 
   useEffect(() => {
     const fetchData = async () => {

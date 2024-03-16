@@ -72,8 +72,8 @@ export const ListCategoryBottom = () => {
   return (
     <>
       <div className="container mx-auto">
-        <div className="bg-white rounded-[20px] p-12 flex justify-center items-center">
-          <div className="grid gap-8 grid-cols-5" data-aos="zoom-in">
+        <div className="bg-white rounded-[20px] p-12 flex justify-center items-center" data-aos="zoom-in">
+          <div className="grid gap-8 grid-cols-5">
             {items.map((item, index) => (
               <div key={index} className="w-28" style={{ cursor: "pointer" }}>
                 <div

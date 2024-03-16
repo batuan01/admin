@@ -17,7 +17,7 @@ export const InputQuantity = ({ quantity, setQuantity, maxQuantity }) => {
       <button type="button" onClick={handleDecrement}>
         -
       </button>
-      <input type="number" value={quantity} readOnly max={10} />
+      <input type="number" value={quantity} max={10} />
       <button type="button" onClick={handleIncrement}>
         +
       </button>
