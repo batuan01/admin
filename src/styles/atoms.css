@@ -14,7 +14,7 @@
 }
 
 .css_button::after {
-  content: '';
+  content: "";
   z-index: -1;
   background-color: hsla(0, 0%, 100%, 0.2);
   position: absolute;
@@ -56,7 +56,6 @@
 }
 
 @keyframes left-swing {
-
   50%,
   100% {
     transform: translateX(95%);
@@ -74,14 +73,14 @@
 }
 
 /* input quantity */
-.input_quantity{
+.input_quantity {
   display: flex;
 }
 .input_quantity button {
   border: 1px solid black;
   padding: 10px 20px;
 }
-.input_quantity button:first-child{
+.input_quantity button:first-child {
   border-radius: 50px 0 0 50px;
 }
 .input_quantity button:nth-child(3) {
@@ -116,18 +115,20 @@
   border-radius: inherit;
   background: currentColor;
   box-shadow: -10px 0 12px 3px currentColor;
-  clip-path: polygon(0 5%, 100% 0,100% 100%,0 95%,-30px 50%);
+  clip-path: polygon(0 5%, 100% 0, 100% 100%, 0 95%, -30px 50%);
   animation: l14 1s infinite linear;
 }
 @keyframes l14 {
-  100% {left: calc(100% + 20px)}
+  100% {
+    left: calc(100% + 20px);
+  }
 }
 
 .css-button {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: white;
-  background-color: #171717;
+  background-color: #171717 !important;
   padding: 0.5em 1em;
   border: none;
   border-radius: 0.6rem;

@@ -192,7 +192,7 @@ export const CategoryForm = () => {
           sizeSm={true}
           onClick={() => handleCloseModal()}
           textBlack={true}
-          className={"border-black border-[1px] bg-slate-300 w-20"}
+          className={"bg-slate-300 w-20"}
         />
         <ButtonModal
           title={isNew ? "Create" : "Update"}

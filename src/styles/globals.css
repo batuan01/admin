@@ -23,6 +23,7 @@
   --white-color-alt: hsl(12, 14%, 93%);
   --dark-color: hsl(300, 100%, 0%);
   --gray-bg-color: #eceff180;
+  --blue: #3699ff;
 }
 
 /* ================= BASE ==================== */
@@ -48,14 +49,14 @@ img {
 body {
   font-family: "Raleway", sans-serif;
   font-size: 1rem;
-  background-color: var(--gray-bg-color);
+  /* background-color: var(--gray-bg-color); */
   height: 100vh;
   overflow-x: hidden;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  color: #3e537c;
   /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+  /* background: linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6)); */
 }
 
 body > div:nth-child(1) {

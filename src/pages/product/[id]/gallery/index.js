@@ -1,17 +1,12 @@
-import { ButtonModal } from "../../../../components/atoms/Button";
-import { UploadImage } from "../../../../components/molecules/UploadImage";
-import { ConvertFirebase } from "../../../../components/utils/firebase";
-import Notification from "../../../../components/atoms/Notification";
-
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
-import {
-  DeleteGallery,
-  ListGalleries,
-  PostGalleries,
-} from "../../../../utils/auth";
+import { useRouter } from "next/router";
+import { ConvertFirebase } from "../../../../utils/firebase";
+import { DeleteGallery, ListGalleries, PostGalleries } from "../../../../utils/auth";
+import Notification from "../../../../components/atoms/Notification";
+import { UploadImage } from "../../../../components/molecules/UploadImage";
+import { ButtonModal } from "../../../../components/atoms/Button";
 
 const GalleryPage = ({ isNew = true }) => {
   const {

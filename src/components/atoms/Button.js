@@ -53,7 +53,7 @@ export const ButtonIcon = ({
 }) => {
   return (
     <button
-      className={"css-button " + ` ${className}`}
+      className={"css-button " + `${className}`}
       type={type}
       onClick={onClick}
       disabled={disabled}

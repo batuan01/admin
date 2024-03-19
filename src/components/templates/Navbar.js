@@ -11,6 +11,7 @@ import {
 } from "react-icons/fc";
 import { BiSolidDiscount } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { CouponIcon } from "../atoms/Icon";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -55,7 +56,7 @@ export const Navbar = () => {
     },
     {
       name: "Coupon",
-      icon: <BiSolidDiscount className="text-3xl" />,
+      icon: <CouponIcon className="text-3xl w-7" />,
       link: "/coupon",
     },
   ];

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import { useRouter } from "next/router";
 
 const Pagination = ({ total, paginationPage, setPaginationPage }) => {
@@ -26,17 +25,16 @@ const Pagination = ({ total, paginationPage, setPaginationPage }) => {
         <p data-page="-1" className="cdp_i" onClick={handlePageClick}>
           prev
         </p>
-        {page &&
-          [...Array(page).keys()]?.map((index) => (
-            <p
-              data-page={index + 1}
-              className="cdp_i"
-              key={index + 1}
-              onClick={handlePageClick}
-            >
-              {index + 1}
-            </p>
-          ))}
+        {page && [...Array(page).keys()]?.map((index) => (
+          <p
+            data-page={index + 1}
+            className="cdp_i"
+            key={index + 1}
+            onClick={handlePageClick}
+          >
+            {index + 1}
+          </p>
+        ))}
         <p data-page="+1" className="cdp_i" onClick={handlePageClick}>
           next
         </p>

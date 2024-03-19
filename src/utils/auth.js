@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
-import SERVICES from "../assets";
 import Notification from "../components/atoms/Notification";
-
+import SERVICES from "../assets";
 
 /* <ADMIN> */
 export const LoginAdmin = async (payload) => {
@@ -16,7 +15,7 @@ export const LoginAdmin = async (payload) => {
         admin_role: data.admin.admin_role,
       };
 
-      localStorage.setItem("admin", JSON.stringify(dataAdmin));
+      // localStorage.setItem("admin", JSON.stringify(dataAdmin));
     } else {
       logError(data);
     }

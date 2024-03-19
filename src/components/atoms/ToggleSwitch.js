@@ -1,5 +1,3 @@
-
-
 export const ToggleSwitch = ({ checked, onChange }) => {
   return (
     <>

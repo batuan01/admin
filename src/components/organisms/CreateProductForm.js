@@ -12,7 +12,6 @@ import { ListCategories, PostProduct } from "../../utils/auth";
 import Notification from "../atoms/Notification";
 import { useRouter } from "next/router";
 
-
 const CreateProductForm = ({ isNew = true }) => {
   const {
     register,

@@ -1,5 +1,4 @@
 import { Fragment, useState } from "react";
-
 import { Dialog, Transition } from "@headlessui/react";
 export const Loading = () => {
   return (

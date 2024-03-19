@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { TableForm } from "../molecules/Table";
 import { DeleteCustomer, GetCustomers } from "../../utils/auth";
@@ -7,11 +6,10 @@ import { ConfirmDelete } from "../molecules/ConfirmDelete";
 import Notification from "../atoms/Notification";
 import { FaPenToSquare, FaPlus } from "react-icons/fa6";
 import { ButtonIcon, ButtonModal } from "../atoms/Button";
-
 import { DateForm } from "../molecules/Date";
+import { useForm } from "react-hook-form";
 import { InputModal } from "../atoms/Input";
 import { Modal } from "../molecules/Modal";
-import { useRouter } from "next/router";
 
 export const CouponForm = () => {
   const [dataAll, setDataAll] = useState();
@@ -21,8 +19,14 @@ export const CouponForm = () => {
   const [isNew, setIsNew] = useState(false);
   const [isNewCoupon, setIsNewCoupon] = useState(false);
 
-  const router = useRouter();
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    methods,
+    control,
+    formState: { errors },
+  } = useForm();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,7 +98,7 @@ export const CouponForm = () => {
       </tr>
     ))
   );
-
+  const handleUpdate = () => {};
   const ContentModal = (
     <form onSubmit={handleSubmit(isNew ? handleCreate : handleUpdate)}>
       <p className="uppercase text-center mb-5 font-bold border-b-2 pb-4">

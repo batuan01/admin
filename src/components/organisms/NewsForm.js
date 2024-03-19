@@ -2,11 +2,18 @@ import { useEffect, useState } from "react";
 import { ConfirmDelete } from "../molecules/ConfirmDelete";
 import { TableForm } from "../molecules/Table";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
-import { FaPenToSquare } from "react-icons/fa6";
+import { FaPenToSquare, FaPlus } from "react-icons/fa6";
 import Link from "next/link";
-import { GetNews, UpdateNews, UpdateNewsStatus } from "../../utils/auth";
+import {
+  DeleteNews,
+  GetNews,
+  UpdateNews,
+  UpdateNewsStatus,
+} from "../../utils/auth";
 import { ToggleSwitch } from "../atoms/ToggleSwitch";
 import Notification from "../atoms/Notification";
+import { ButtonIcon } from "../atoms/Button";
+import { useRouter } from "next/router";
 
 export const NewsForm = () => {
   const [dataAll, setDataAll] = useState();
@@ -14,6 +21,8 @@ export const NewsForm = () => {
   const [isReload, setIsReload] = useState(false);
   const [dataUpdate, setDataUpdate] = useState();
   const [isNew, setIsNew] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,7 +50,7 @@ export const NewsForm = () => {
     Notification.success("Updated status successfully!");
   };
 
-  const dataThead = ["No.", "Name", "Content", "Status", "Action"];
+  const dataThead = ["No.", "Name", "Image", "Status", "Action"];
   const dataBody = [];
 
   dataBody.push(
@@ -54,14 +63,11 @@ export const NewsForm = () => {
         </td>
         <td className="py-3 px-5  text-center ">
           <p className="antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold flex gap-2 items-center justify-center">
-            <img src={item.news_image} className="h-10 w-auto" />
             {item.news_name}
           </p>
         </td>
-        <td className="py-3 px-5  text-center ">
-          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
-            {item.news_content}
-          </p>
+        <td className="py-3 px-5 text-center flex justify-center">
+          <img src={item.news_image} className="h-10 w-auto" />
         </td>
         <td className="py-3 px-5  text-center ">
           <ToggleSwitch
@@ -72,7 +78,7 @@ export const NewsForm = () => {
 
         <td className="py-3 px-5  text-center ">
           <p className="flex justify-center gap-5">
-            <Link href={"/product/" + item.product_id}>
+            <Link href={"/news/" + item.news_id}>
               <FaPenToSquare className="h-5" />
             </Link>
             <button
@@ -88,11 +94,33 @@ export const NewsForm = () => {
       </tr>
     ))
   );
+
+  const handleDelete = async () => {
+    setIsOpen(false);
+    const payload = {
+      news_id: dataUpdate.news_id,
+    };
+    await DeleteNews(payload);
+
+    setIsReload(!isReload);
+    Notification.success("Delete news successfully!");
+  };
+
   return (
     <>
+      <div className="flex justify-end mb-5">
+        <ButtonIcon
+          title={"Add News"}
+          icon={<FaPlus />}
+          type={"button"}
+          onClick={() => {
+            router.push("/news/create");
+          }}
+        />
+      </div>
       <TableForm dataThead={dataThead} dataBody={dataBody} />
       <ConfirmDelete
-        title={"Do you want to delete the customer?"}
+        title={"Do you want to delete the news?"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         onClick={handleDelete}

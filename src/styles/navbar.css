@@ -50,7 +50,7 @@
     position: absolute;
     opacity: 0;
     z-index: -1;
-    top: 0;
+    top: 0px;
     left: 1rem;
     width: 3.5rem;
     height: 3.5rem;

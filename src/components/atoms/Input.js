@@ -17,7 +17,7 @@ export const InputQuantity = ({ quantity, setQuantity, maxQuantity }) => {
       <button type="button" onClick={handleDecrement}>
         -
       </button>
-      <input type="number" value={quantity} max={10} />
+      <input type="number" value={quantity} readOnly max={10} />
       <button type="button" onClick={handleIncrement}>
         +
       </button>
@@ -60,14 +60,14 @@ export const InputModal = ({
 }) => {
   return (
     <>
-      <p className="text-[#5c677e] font-medium text-sm pb-2">
+      <p className="text-[#465068] font-medium text-sm pb-2">
         {label} {required && <span className="text-[#ff0f0f]">*</span>}
       </p>
       <input
         type={type}
         {...register}
         placeholder={placeholder}
-        className={`box-border w-full p-2 border border-[#DEE1EB] border-solid rounded bg-white text-gray text-base font-normal leading-6  ${
+        className={`box-border w-full p-2 border border-[#DEE1EB] border-solid rounded bg-white text-gray text-base font-normal leading-6 focus:outline-none focus:shadow-md focus:border-stone-600 ${
           disabled ? "text-opacity-80" : "text-opacity-100"
         } + ${className} `}
         style={{ "--tw-ring-color": "rgba(0,0,0,0.6)" }}

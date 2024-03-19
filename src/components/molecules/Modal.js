@@ -25,14 +25,14 @@ export const Modal = ({ isOpen, setIsOpen, content }) => {
           <div className="w-auto mx-auto z-[52]">
             <Transition.Child
               as={Fragment}
-              enter="transform transition ease-in-out duration-500 sm:duration-700"
+              enter="transform transition ease-in-out duration-200 sm:duration-500"
               enterFrom="translate-y-full"
               enterTo="translate-y-0"
-              leave="transform transition ease-in-out duration-500 sm:duration-700"
+              leave="transform transition ease-in-out duration-150 sm:duration-150"
               leaveFrom="translate-y-0"
               leaveTo="translate-y-full"
             >
-              <Dialog.Panel className="bg-[#F5F5F5] overflow-hidden border-t-4 border-solid border-[#3699FF]">
+              <Dialog.Panel className="bg-[#F5F5F5] overflow-hidden border-t-4 border-solid border-[#3699FF] rounded-xl">
                 <div className="flex flex-col h-full">
                   <div className="py-6 px-8 bg-white text-black w-full transition-all">
                     {content}
