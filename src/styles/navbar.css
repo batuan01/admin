@@ -1,11 +1,11 @@
 .navbar {
   position: fixed;
-  top: 56px;
+  top: 0px;
   left: 0.1rem;
   bottom: 0.1rem;
   background: #fff;
   /* border-radius: 10px; */
-  padding: 1rem 0;
+  /* padding: 1rem 0; */
   box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
   /* height: calc(100vh - 6rem); */
   border: 1px solid #bdbdbd;
@@ -1371,7 +1371,7 @@
 }
 
 .gradient-text {
-  background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+  background: linear-gradient(45deg, #ffca0d, #cc4fc5, #455ad1);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

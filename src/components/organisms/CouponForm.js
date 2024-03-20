@@ -8,7 +8,7 @@ import { FaPenToSquare, FaPlus } from "react-icons/fa6";
 import { ButtonIcon, ButtonModal } from "../atoms/Button";
 import { DateForm } from "../molecules/Date";
 import { useForm } from "react-hook-form";
-import { InputModal } from "../atoms/Input";
+import { InputModal, InputSearch } from "../atoms/Input";
 import { Modal } from "../molecules/Modal";
 
 export const CouponForm = () => {
@@ -169,10 +169,21 @@ export const CouponForm = () => {
     setIsNewCategory(false);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      console.log(event.target.value);
+    }
+  };
+
   return (
     <>
-      <div className="flex justify-between mb-7 bg-slate-300 p-7 shadow-sm">
-        <p className="text-3xl font-bold pl-5">ALL COUPON</p>
+      <div className="flex justify-between py-7 px-10">
+        <InputSearch
+          type="text"
+          placeholder={"Search"}
+          onKeyDown={handleKeyDown}
+        />
+
         <div className="flex justify-end">
           <ButtonIcon
             title={"Add Coupon"}

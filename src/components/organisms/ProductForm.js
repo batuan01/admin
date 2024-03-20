@@ -18,7 +18,7 @@ import { ConfirmDelete } from "../molecules/ConfirmDelete";
 import { ButtonIcon, ButtonModal } from "../atoms/Button";
 import { FaPlus } from "react-icons/fa6";
 import { Modal } from "../molecules/Modal";
-import { InputForm, InputModal } from "../atoms/Input";
+import { InputForm, InputModal, InputSearch } from "../atoms/Input";
 import { useForm } from "react-hook-form";
 import { ToggleSwitch } from "../atoms/ToggleSwitch";
 import Notification from "../atoms/Notification";
@@ -149,22 +149,39 @@ export const ProductForm = () => {
     Notification.success("Delete category successfully!");
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      console.log(event.target.value);
+    }
+  };
+
   return (
     <>
-      <div className="flex justify-end mb-5">
-        <ButtonIcon
-          title={"Add Product"}
-          icon={<FaPlus />}
-          type={"submit"}
-          onClick={() => {
-            router.push("/product/create");
-          }}
+      <div className="flex justify-between py-7 px-10">
+        <InputSearch
+          type="text"
+          placeholder={"Search"}
+          onKeyDown={handleKeyDown}
         />
+
+        <div className="flex justify-end">
+          <ButtonIcon
+            title={"Add Product"}
+            icon={<FaPlus />}
+            type={"submit"}
+            onClick={() => {
+              router.push("/product/create");
+            }}
+          />
+        </div>
       </div>
-      <TableForm dataThead={dataThead} dataBody={dataBody} />
-      {dataAll?.data?.length === 0 && (
-        <p className="text-center font-medium py-10">No product</p>
-      )}
+
+      <div className="mx-10">
+        <TableForm dataThead={dataThead} dataBody={dataBody} />
+        {(!dataAll || dataAll?.length === 0) && (
+          <p className="text-center font-medium py-10">No data</p>
+        )}
+      </div>
       <ConfirmDelete
         title={"Do you want to delete the product?"}
         isOpen={isOpen}

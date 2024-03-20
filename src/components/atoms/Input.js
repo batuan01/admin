@@ -91,15 +91,15 @@ export const InputFormAdmin = ({
   name,
 }) => {
   return (
-    <div className="w-full">
-      <p className="text-[#3f4657] font-medium text-sm pb-2">
+    <div className="w-full flex gap-5 items-center">
+      <p className="text-[#3f4657] font-medium text-sm">
         {label} {required && <span className="text-[#ff0f0f]">*</span>}
       </p>
       <input
         type={type}
         {...register}
         placeholder={placeholder}
-        className={`w-full h-12 border border-stone-400 border-solid rounded-sm p-1 pl-[20px] text-base shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300  ${
+        className={`w-auto h-12 border border-stone-400 border-solid rounded-sm p-1 pl-[20px] text-base shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 flex-grow  ${
           disabled ? "text-opacity-80" : "text-opacity-100"
         } + ${className} `}
         style={{ "--tw-ring-color": "rgba(0,0,0,0.2)" }}

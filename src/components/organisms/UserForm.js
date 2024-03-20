@@ -4,6 +4,7 @@ import { DeleteCustomer, GetCustomers } from "../../utils/auth";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
 import { ConfirmDelete } from "../molecules/ConfirmDelete";
 import Notification from "../atoms/Notification";
+import { InputSearch } from "../atoms/Input";
 
 export const UserForm = () => {
   const [dataAll, setDataAll] = useState();
@@ -71,9 +72,27 @@ export const UserForm = () => {
     ))
   );
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      console.log(event.target.value);
+    }
+  };
+
   return (
     <>
-      <TableForm dataThead={dataThead} dataBody={dataBody} />
+      <div className="flex justify-between py-7 px-10">
+        <InputSearch
+          type="text"
+          placeholder={"Search"}
+          onKeyDown={handleKeyDown}
+        />
+      </div>
+      <div className="mx-10">
+        <TableForm dataThead={dataThead} dataBody={dataBody} />
+        {(!dataAll || dataAll?.length === 0) && (
+          <p className="text-center font-medium py-10">No data</p>
+        )}
+      </div>
       <ConfirmDelete
         title={"Do you want to delete the customer?"}
         isOpen={isOpen}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { InputForm, InputFormAdmin } from "../atoms/Input";
+import { InputForm } from "../atoms/Input";
 import { CustomEditor } from "../molecules/FormEditor";
 import { ButtonModal } from "../atoms/Button";
 import { UploadInfoImage } from "../molecules/UploadInfoImage";

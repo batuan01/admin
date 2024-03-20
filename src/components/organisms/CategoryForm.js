@@ -227,7 +227,6 @@ export const CategoryForm = () => {
   return (
     <>
       <div className="flex justify-between py-7 px-10">
-        {/* <p className="text-3xl font-bold pl-5">ALL CATEGORY</p> */}
         <InputSearch
           type="text"
           placeholder={"Search"}

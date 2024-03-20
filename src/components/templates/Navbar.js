@@ -67,7 +67,11 @@ export const Navbar = () => {
 
   return (
     <nav className="navbar bg-white shadow-sm z-10 transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100">
-      <ul className="navbar__menu">
+      <div className=" h-[55px] text-2xl flex justify-center items-center font-bold border-solid border-b-[1px] border-slate-300 bg-[#f7f9fa] gradient-text">
+        <Link href="/">TGDD</Link>
+      </div>
+
+      <ul className="navbar__menu mt-10">
         {listCategory.map((item, index) => (
           <li className="navbar__item" key={index}>
             <Link href={item.link}>
@@ -90,12 +94,12 @@ export const Navbar = () => {
         ))}
       </ul>
 
-      <div className="navbar__item absolute bottom-10">
+      {/* <div className="navbar__item absolute bottom-10">
         <div className={`navbar__link`} onClick={handleLogout}>
           <LogoutIcon className="text-3xl w-7 rotate-180 hover:fill-[#406ff3]" />
           <span>Logout</span>
         </div>
-      </div>
+      </div> */}
     </nav>
   );
 };
