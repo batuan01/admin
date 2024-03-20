@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import { GoSearch } from "react-icons/go";
 
 export const InputQuantity = ({ quantity, setQuantity, maxQuantity }) => {
   const handleIncrement = () => {
@@ -128,5 +128,25 @@ export const TextAreaBlack = ({
       className={`w-full border rounded-sm p-3 + ${className}`}
       style={{ "--tw-ring-color": "rgba(0,0,0,0.6)" }}
     ></textarea>
+  );
+};
+
+export const InputSearch = ({ placeholder, type, className, autoComplete, onKeyDown }) => {
+  return (
+    <>
+      <div className="flex items-center">
+        <div className="absolute ml-2">
+          <GoSearch />
+        </div>
+        <input
+          type={type}
+          placeholder={placeholder}
+          className={`box-border w-auto h-10 rounded bg-white border border-[#DEE1EB] border-solid text-gray text-base font-normal leading-6 focus:outline-none pl-8 pr-1 + ${className} `}
+          style={{ "--tw-ring-color": "rgba(0,0,0,0.6)" }}
+          autoComplete={autoComplete}
+          onKeyDown={onKeyDown}
+        />
+      </div>
+    </>
   );
 };

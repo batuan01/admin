@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 export const Header = () => {
   const router = useRouter();
   // const admin = JSON.parse(localStorage.getItem("admin"));
-  const admin=1;
+  const admin = 1;
   const changeRole = () => {
     // localStorage.setItem("role", "user");
     router.refresh();
@@ -19,9 +19,9 @@ export const Header = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between py-5 pr-7">
-        <div className="w-full text-sm">
-          Dashboard/ <span className="text-black">Home</span>
+      <div className="flex items-center justify-between h-[56px] pr-7 bg-white border-solid border-b-[1px] border-slate-300">
+        <div className="w-[99px] h-full text-2xl flex justify-center items-center font-bold border-solid border-r-[1px] border-slate-300 bg-[#f7f9fa] gradient-text">
+          <Link href="/">TGDD</Link>
         </div>
         <div className="flex justify-end w-full">
           <div className="flex items-center gap-2 mr-5" onClick={logOut}>

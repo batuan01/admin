@@ -61,7 +61,7 @@ export const Facebook = ({ className }) => {
   );
 };
 
-export const CouponIcon = ({className}) => (
+export const CouponIcon = ({ className }) => (
   <svg
     id="Flat"
     viewBox="0 0 64 64"
@@ -93,5 +93,19 @@ export const CouponIcon = ({className}) => (
       d="M23,52a1,1,0,0,0,1-1V46a1,1,0,0,0-2,0v5A1,1,0,0,0,23,52Z"
     />
     <path fill="#fff" d="M23,55a1,1,0,0,0-1,1v3h2V56A1,1,0,0,0,23,55Z" />
+  </svg>
+);
+
+export const LogoutIcon = ({ className }) => (
+  <svg
+    viewBox="0 0 96 96"
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+  >
+    <title />
+    <g>
+      <path d="M20.4844,54H66a6,6,0,0,0,0-12H20.4844l7.7578-7.7578a5.9994,5.9994,0,0,0-8.4844-8.4844l-18,18a5.9979,5.9979,0,0,0,0,8.4844l18,18a5.9994,5.9994,0,1,0,8.4844-8.4844Z" />
+      <path d="M90,0H42a5.9966,5.9966,0,0,0-6,6V18a6,6,0,0,0,12,0V12H84V84H48V78a6,6,0,0,0-12,0V90a5.9966,5.9966,0,0,0,6,6H90a5.9966,5.9966,0,0,0,6-6V6A5.9966,5.9966,0,0,0,90,0Z" />
+    </g>
   </svg>
 );
