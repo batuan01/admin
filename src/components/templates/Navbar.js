@@ -11,7 +11,7 @@ import {
 } from "react-icons/fc";
 import { BiSolidDiscount } from "react-icons/bi";
 import { useRouter } from "next/router";
-import { CouponIcon } from "../atoms/Icon";
+import { CouponIcon, LogoutIcon } from "../atoms/Icon";
 
 export const Navbar = () => {
   const router = useRouter();
@@ -61,8 +61,12 @@ export const Navbar = () => {
     },
   ];
 
+  const handleLogout = () => {
+    router.push("/signin");
+  };
+
   return (
-    <nav className="navbar bg-white shadow-sm z-10 rounded-xl transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100">
+    <nav className="navbar bg-white shadow-sm z-10 transition-transform duration-300 xl:translate-x-0 border border-blue-gray-100">
       <ul className="navbar__menu">
         {listCategory.map((item, index) => (
           <li className="navbar__item" key={index}>
@@ -85,6 +89,13 @@ export const Navbar = () => {
           </li>
         ))}
       </ul>
+
+      <div className="navbar__item absolute bottom-10">
+        <div className={`navbar__link`} onClick={handleLogout}>
+          <LogoutIcon className="text-3xl w-7 rotate-180 hover:fill-[#406ff3]" />
+          <span>Logout</span>
+        </div>
+      </div>
     </nav>
   );
 };

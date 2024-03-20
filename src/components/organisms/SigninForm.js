@@ -31,7 +31,7 @@ export const SigninForm = () => {
 
   return (
     <div className="relative py-3 flex items-center justify-center h-full w-full">
-      <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow rounded-3xl sm:p-10">
+      <div className="relative px-4 py-10 bg-white mx-8 md:mx-0 shadow-2xl rounded-3xl sm:p-10 border-solid border-[1px] border-slate-300">
         <form onSubmit={handleSubmit(handleLogin)}>
           <div className="max-w-md mx-auto">
             <div className="flex items-center space-x-5 justify-center text-3xl font-bold">

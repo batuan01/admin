@@ -14,7 +14,7 @@ import { ConfirmDelete } from "../molecules/ConfirmDelete";
 import { ButtonIcon, ButtonModal } from "../atoms/Button";
 import { FaPlus } from "react-icons/fa6";
 import { Modal } from "../molecules/Modal";
-import { InputForm, InputModal } from "../atoms/Input";
+import { InputForm, InputModal, InputSearch } from "../atoms/Input";
 import { useForm } from "react-hook-form";
 import { ToggleSwitch } from "../atoms/ToggleSwitch";
 import Notification from "../atoms/Notification";
@@ -218,28 +218,46 @@ export const CategoryForm = () => {
     }
   }, [dataUpdate, isNew]);
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      console.log(event.target.value);
+    }
+  };
+
   return (
     <>
-      <div className="flex justify-end mb-5">
-        <ButtonIcon
-          title={"Add Category"}
-          icon={<FaPlus />}
-          type={"submit"}
-          onClick={() => {
-            setIsNewCategory(true);
-            setIsNew(true);
-          }}
+      <div className="flex justify-between py-7 px-10">
+        {/* <p className="text-3xl font-bold pl-5">ALL CATEGORY</p> */}
+        <InputSearch
+          type="text"
+          placeholder={"Search"}
+          onKeyDown={handleKeyDown}
         />
-        <Modal
-          isOpen={isNewCategory}
-          setIsOpen={handleCloseModal}
-          content={ContentModal}
-        />
+
+        <div className="flex justify-end">
+          <ButtonIcon
+            title={"Add Category"}
+            icon={<FaPlus />}
+            type={"submit"}
+            onClick={() => {
+              setIsNewCategory(true);
+              setIsNew(true);
+            }}
+          />
+          <Modal
+            isOpen={isNewCategory}
+            setIsOpen={handleCloseModal}
+            content={ContentModal}
+          />
+        </div>
       </div>
-      <TableForm dataThead={dataThead} dataBody={dataBody} />
-      {dataAll?.length === 0 && (
-        <p className="text-center font-medium py-10">No category</p>
-      )}
+
+      <div className="mx-10">
+        <TableForm dataThead={dataThead} dataBody={dataBody} />
+        {(!dataAll || dataAll?.length === 0) && (
+          <p className="text-center font-medium py-10">No data</p>
+        )}
+      </div>
       <ConfirmDelete
         title={"Do you want to delete the category?"}
         isOpen={isOpen}

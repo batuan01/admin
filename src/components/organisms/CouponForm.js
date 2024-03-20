@@ -171,23 +171,32 @@ export const CouponForm = () => {
 
   return (
     <>
-      <div className="flex justify-end mb-5">
-        <ButtonIcon
-          title={"Add Coupon"}
-          icon={<FaPlus />}
-          type={"button"}
-          onClick={() => {
-            setIsNewCoupon(true);
-            setIsNew(true);
-          }}
-        />
-        <Modal
-          isOpen={isNewCoupon}
-          setIsOpen={handleCloseModal}
-          content={ContentModal}
-        />
+      <div className="flex justify-between mb-7 bg-slate-300 p-7 shadow-sm">
+        <p className="text-3xl font-bold pl-5">ALL COUPON</p>
+        <div className="flex justify-end">
+          <ButtonIcon
+            title={"Add Coupon"}
+            icon={<FaPlus />}
+            type={"button"}
+            onClick={() => {
+              setIsNewCoupon(true);
+              setIsNew(true);
+            }}
+          />
+          <Modal
+            isOpen={isNewCoupon}
+            setIsOpen={handleCloseModal}
+            content={ContentModal}
+          />
+        </div>
       </div>
-      <TableForm dataThead={dataThead} dataBody={dataBody} />
+
+      <div className="mx-10">
+        <TableForm dataThead={dataThead} dataBody={dataBody} />
+        {(!dataAll || dataAll?.length === 0) && (
+          <p className="text-center font-medium py-10">No data</p>
+        )}
+      </div>
       <ConfirmDelete
         title={"Do you want to delete the coupon?"}
         isOpen={isOpen}

@@ -4,23 +4,31 @@ import { AuthProvider } from "../contexts/AuthContext";
 import { Navbar } from "./Navbar";
 import { Header } from "./Header";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 
 export const LayoutAdmin = ({ children }) => {
   const router = useRouter();
   const pathname = router.pathname;
 
   const whiteList = ["/signin"];
+
+  // const admin = Cookies.get("admin");
+  // useEffect(() => {
+  //   if (!admin) {
+  //     router.push("/signin");
+  //   }
+  // }, []);
+
   return (
     <>
       <AuthProvider>
         <ToastContainer />
         {!whiteList.includes(pathname) ? (
           <>
-            <div className="ml-[150px]">
-              <Header />
-            </div>
+            <Header />
             <Navbar />
-            <div className="ml-[150px] mr-10">{children}</div>
+            <div className="ml-[90px]">{children}</div>
           </>
         ) : (
           <>{children}</>

@@ -15,7 +15,8 @@ export const LoginAdmin = async (payload) => {
         admin_role: data.admin.admin_role,
       };
 
-      // localStorage.setItem("admin", JSON.stringify(dataAdmin));
+      Cookies.set("admin", dataAdmin);
+      Notification.success("Success !");
     } else {
       logError(data);
     }
