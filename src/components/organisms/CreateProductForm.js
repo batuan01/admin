@@ -11,6 +11,9 @@ import { ComboBoxSelect } from "../atoms/ComboBoxSelect";
 import { ListCategories, PostProduct } from "../../utils/auth";
 import Notification from "../atoms/Notification";
 import { useRouter } from "next/router";
+import { UploadOnlyImage } from "../molecules/UploadOnlyImage";
+import { TableForm } from "../molecules/Table";
+import { HiArchiveBoxXMark } from "react-icons/hi2";
 
 const CreateProductForm = ({ isNew = true }) => {
   const {
@@ -106,125 +109,205 @@ const CreateProductForm = ({ isNew = true }) => {
     setForms([...forms, {}]);
   };
 
+  const removeForm = (index) => {
+    const newForms = forms.filter((_, i) => i !== index);
+    setForms(newForms);
+  };
+
+  const dataThead = ["No.", "Name", "Quantity", "Price", "Action"];
+  const dataBody = [];
+
+  dataBody.push(
+    forms.map((item, index) => (
+      <tr key={index} className="border-b border-[#bdbdbd]">
+        <td className="text-center">
+          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
+            {index + 1}
+          </p>
+        </td>
+        <td className="text-center">
+          <input
+            type="text"
+            className="border-x py-3 focus:outline-none pl-3 w-full text-center"
+          />
+        </td>
+        <td className="text-center ">
+          <input
+            type="text"
+            className="border-r py-3 focus:outline-none pl-3 w-full text-center"
+          />
+        </td>
+        <td className="text-center ">
+          <input
+            type="text"
+            className="border-r py-3 focus:outline-none pl-3 w-full text-center"
+          />
+        </td>
+        <td className="text-center ">
+          <button onClick={() => removeForm(index)}>
+            <HiArchiveBoxXMark className="h-5 hover:text-red" />
+          </button>
+        </td>
+      </tr>
+    ))
+  );
+
   return (
     <>
-      <form
-        onSubmit={handleSubmit(isNew ? handleCreate : handleUpdate)}
-        className="px-10 pt-5"
-      >
-        <p className="uppercase text-center mb-5 text-2xl font-bold border-b-2 border-blue-400 pb-4">
+      <form onSubmit={handleSubmit(isNew ? handleCreate : handleUpdate)}>
+        <p className="text-white p-5 text-2xl font-bold border-b border-blue-400 pb-4 bg-[#252525]">
           {isNew ? "Create" : "Update"} Product
         </p>
 
-        {/* <div className="h-56 w-56">
-            <UploadInfoImage
-              name={"Product Image"}
-              selectedFiles={selectedFilesInfo}
-              setSelectedFiles={setSelectedFilesInfo}
-            />
-          </div> */}
-        <div className="w-full">
-          <div className="flex gap-5">
-            <div className="w-full flex gap-5 items-center">
-              <p className="text-[#3f4657] font-medium text-sm flex gap-1">
-                Caregory <span className="text-[#ff0f0f]">*</span>
-              </p>
-              <Controller
-                methods={methods}
-                name="caregory"
-                control={control}
-                // rules={{ required: "Category is required" }}
-                render={({ field }) => {
-                  const { onChange, value, ref } = field;
-                  return (
-                    <ComboBoxSelect
-                      data={allNameCatogory}
-                      selected={selectedCategory}
-                      setSelected={setSelectedCategory}
-                    />
-                  );
-                }}
-              />
-
-              {errors.caregory && (
-                <p className="text-red text-xs italic pt-1">
-                  {errors.caregory.message}
+        <div className="px-10 pt-5">
+          <div className="w-full">
+            <div className="flex gap-5">
+              <div className="w-full flex gap-5 items-center">
+                <p className="text-[#3f4657] font-medium text-sm flex gap-1 w-[100px]">
+                  Caregory <span className="text-[#ff0f0f]">*</span>
                 </p>
-              )}
+                <Controller
+                  methods={methods}
+                  name="caregory"
+                  control={control}
+                  // rules={{ required: "Category is required" }}
+                  render={({ field }) => {
+                    const { onChange, value, ref } = field;
+                    return (
+                      <div className="flex-grow">
+                        <ComboBoxSelect
+                          data={allNameCatogory}
+                          selected={selectedCategory}
+                          setSelected={setSelectedCategory}
+                        />
+                      </div>
+                    );
+                  }}
+                />
+
+                {errors.caregory && (
+                  <p className="text-red text-xs italic pt-1">
+                    {errors.caregory.message}
+                  </p>
+                )}
+              </div>
+
+              <InputFormAdmin
+                register={register("product_name", {
+                  required: "Product Name cannot be left blank",
+                })}
+                type="text"
+                placeholder={"Name"}
+                label={"Product Name"}
+                required={true}
+                errors={errors}
+                name={"product_name"}
+              />
+            </div>
+            <div className="flex gap-5 my-5">
+              <InputFormAdmin
+                register={register("product_sale")}
+                type="text"
+                placeholder={"Product Sale"}
+                label={"Product Sale"}
+              />
+              <div className="w-full flex items-center gap-5">
+                <p className="text-[#3f4657] font-medium text-sm w-[100px]">
+                  Product Image
+                </p>
+                <UploadOnlyImage
+                  selectedFiles={selectedFilesInfo}
+                  setSelectedFiles={setSelectedFilesInfo}
+                />
+              </div>
+            </div>
+            <div className="flex gap-5 my-5">
+              <InputFormAdmin
+                register={register("product_ram")}
+                type="text"
+                placeholder={"Product ram"}
+                label={"Product Ram"}
+              />
+              <InputFormAdmin
+                register={register("hard_drive")}
+                type="text"
+                placeholder={"Hard Drive"}
+                label={"Hard Drive"}
+                width={"w-[70px]"}
+              />
+              <InputFormAdmin
+                register={register("product_card")}
+                type="text"
+                placeholder={"Product Card"}
+                label={"Product Card"}
+              />
+              <InputFormAdmin
+                register={register("desktop")}
+                type="text"
+                placeholder={"Desktop"}
+                label={"Desktop"}
+                width={"w-[50px]"}
+              />
             </div>
 
-            <InputFormAdmin
-              register={register("product_name", {
-                required: "Product Name cannot be left blank",
-              })}
-              type="text"
-              placeholder={"Name"}
-              label={"Product Name"}
-              required={true}
-              errors={errors}
-              name={"product_name"}
-            />
-          </div>
-          <div className="flex gap-5">
-            <InputFormAdmin
-              register={register("product_sale")}
-              type="text"
-              placeholder={"Product Sale"}
-              label={"Product Sale"}
-            />
-            <InputFormAdmin
-              register={register("product_price", {
-                required: "Product price cannot be left blank",
-              })}
-              type="text"
-              placeholder={"Product Price"}
-              label={"Product Price"}
-              required={true}
-              errors={errors}
-              name={"product_price"}
-            />
-          </div>
-          <div className="flex gap-5 my-5">
-            <InputFormAdmin
-              register={register("product_ram")}
-              type="text"
-              placeholder={"Product ram"}
-              label={"Product Ram"}
-            />
-            <InputFormAdmin
-              register={register("hard_drive")}
-              type="text"
-              placeholder={"Hard Drive"}
-              label={"Hard Drive"}
-            />
-            <InputFormAdmin
-              register={register("product_card")}
-              type="text"
-              placeholder={"Product Card"}
-              label={"Product Card"}
-            />
-            <InputFormAdmin
-              register={register("desktop")}
-              type="text"
-              placeholder={"Desktop"}
-              label={"Desktop"}
+            <p className="text-[#3f4657] font-medium text-sm pb-2">
+              Product Content
+            </p>
+            <TextAreaBlack
+              register={register("product_content")}
+              placeholder={"Product Content"}
+              className={"h-32"}
             />
           </div>
 
-          <p className="text-[#3f4657] font-medium text-sm pb-2">
-            Product Content
-          </p>
-          <TextAreaBlack
-            register={register("product_content")}
-            placeholder={"Product Content"}
-            className={"h-32"}
-          />
-        </div>
+          {/* <div className="flex gap-10 mt-10 p-10 rounded-lg bg-slate-300">
+            <div className="">
+              <ButtonModal
+                title={"New form"}
+                type={"button"}
+                sizeSm={true}
+                onClick={addForm}
+                textBlack
+                className={"border-black border-[1px] border-solid"}
+                icon={<FaPlusCircle />}
+              />
+              <p className="text-[#5c677e] font-medium text-sm pb-2 mt-4">
+                Product Colors
+              </p>
+            </div>
+            <div className="flex flex-col gap-5 mt-10">
+              {forms.map((form, index) => (
+                <div className="flex gap-5" key={index}>
+                  <InputFormAdmin
+                    register={register(`color-${index}`, {
+                      required: "Color name cannot be left blank",
+                    })}
+                    type="text"
+                    placeholder={"Color Name"}
+                    label={"Color Name"}
+                    required={true}
+                    errors={errors}
+                    name={`color-${index}`}
+                  />
+                  <InputFormAdmin
+                    register={register(`quantity-${index}`, {
+                      required: "Quantity cannot be left blank",
+                    })}
+                    type="text"
+                    placeholder={"Quantity"}
+                    label={"Quantity"}
+                    required={true}
+                    errors={errors}
+                    name={`quantity-${index}`}
+                  />
+                </div>
+              ))}
+            </div>
+          </div> */}
 
-        <div className="flex gap-10 mt-10 p-10 rounded-lg bg-slate-300">
-          <div className="">
+          <div className="mt-10 mb-5 flex justify-end">
             <ButtonModal
-              title={"New form"}
+              title={"Add New Color"}
               type={"button"}
               sizeSm={true}
               onClick={addForm}
@@ -232,55 +315,25 @@ const CreateProductForm = ({ isNew = true }) => {
               className={"border-black border-[1px] border-solid"}
               icon={<FaPlusCircle />}
             />
-            <p className="text-[#5c677e] font-medium text-sm pb-2 mt-4">
-              Product Colors
-            </p>
           </div>
-          <div className="flex flex-col gap-5 mt-10">
-            {forms.map((form, index) => (
-              <div className="flex gap-5" key={index}>
-                <InputFormAdmin
-                  register={register(`color-${index}`, {
-                    required: "Color name cannot be left blank",
-                  })}
-                  type="text"
-                  placeholder={"Color Name"}
-                  label={"Color Name"}
-                  required={true}
-                  errors={errors}
-                  name={`color-${index}`}
-                />
-                <InputFormAdmin
-                  register={register(`quantity-${index}`, {
-                    required: "Quantity cannot be left blank",
-                  })}
-                  type="text"
-                  placeholder={"Quantity"}
-                  label={"Quantity"}
-                  required={true}
-                  errors={errors}
-                  name={`quantity-${index}`}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
+          <TableForm dataThead={dataThead} dataBody={dataBody} />
 
-        <div className="flex justify-end mt-5 gap-4">
-          <ButtonModal
-            title={"Cancel"}
-            type={"button"}
-            sizeSm={true}
-            onClick={() => handleClose()}
-            textBlack={true}
-            className={"border-black border-[1px] bg-slate-300 w-20"}
-          />
-          <ButtonModal
-            title={isNew ? "Create" : "Update"}
-            type={"submit"}
-            sizeSm={true}
-            className={"w-20 bg-blue-500"}
-          />
+          <div className="flex justify-end mt-10 gap-4">
+            <ButtonModal
+              title={"Cancel"}
+              type={"button"}
+              sizeSm={true}
+              onClick={() => handleClose()}
+              textBlack={true}
+              className={"border-black border-[1px] bg-slate-300 w-20"}
+            />
+            <ButtonModal
+              title={isNew ? "Create" : "Update"}
+              type={"submit"}
+              sizeSm={true}
+              className={"w-20 bg-blue-500"}
+            />
+          </div>
         </div>
       </form>
     </>

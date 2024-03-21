@@ -78,9 +78,9 @@ export const NewsForm = () => {
         </td>
 
         <td className="py-3 px-5  text-center ">
-          <p className="flex justify-center gap-5">
+          <div className="flex justify-center gap-5">
             <Link href={"/news/" + item.news_id}>
-              <FaPenToSquare className="h-5" />
+              <FaPenToSquare className="h-5 cursor-pointer" />
             </Link>
             <button
               onClick={() => {
@@ -90,7 +90,7 @@ export const NewsForm = () => {
             >
               <HiArchiveBoxXMark className="h-5 hover:text-red" />
             </button>
-          </p>
+          </div>
         </td>
       </tr>
     ))

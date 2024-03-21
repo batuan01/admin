@@ -28,7 +28,7 @@ export const Modal = ({ isOpen, setIsOpen, content }) => {
               enter="transform transition ease-in-out duration-200 sm:duration-500"
               enterFrom="translate-y-full"
               enterTo="translate-y-0"
-              leave="transform transition ease-in-out duration-150 sm:duration-150"
+              leave="transform transition ease-in-out duration-200 sm:duration-500"
               leaveFrom="translate-y-0"
               leaveTo="translate-y-full"
             >

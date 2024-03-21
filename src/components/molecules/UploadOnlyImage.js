@@ -65,6 +65,7 @@ export const UploadOnlyImage = ({
           marginBottom: "10px",
           background: "white",
           borderRadius: "8px",
+          flexGrow: "1",
         }}
       >
         <input {...getInputProps()} />
@@ -72,33 +73,38 @@ export const UploadOnlyImage = ({
           <button
             type="button"
             className="bg-[#3699ff] text-white p-3"
-            style={{ borderRadius: "5px 0 0 5px" }}
+            style={{ borderRadius: "6px 0 0 6px" }}
           >
             Upload
           </button>
-          {selectedFiles.map((file, index) => {
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  background: "#F1EFEF",
-                  padding: "10px",
-                }}
-                key={index}
-              >
-                <span className="flex gap-1 items-center">
-                  <img
-                    src={URL.createObjectURL(file)}
-                    alt={`Image_${index + 1}`}
-                    className="h-6 w-auto"
-                  />
-                  <span style={{ marginLeft: 10 }}>{file.name}</span>
-                </span>
-              </div>
-            );
-          })}
+
+          {selectedFiles.length > 0 ? (
+            selectedFiles.map((file, index) => {
+              return (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    background: "#F1EFEF",
+                    padding: "10px",
+                  }}
+                  key={index}
+                >
+                  <span className="flex gap-1 items-center">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Image_${index + 1}`}
+                      className="h-6 w-auto"
+                    />
+                    <span style={{ marginLeft: 10 }}>{file.name}</span>
+                  </span>
+                </div>
+              );
+            })
+          ) : (
+            <p className="text-slate-400">Choose file to upload</p>
+          )}
         </div>
       </div>
     </>

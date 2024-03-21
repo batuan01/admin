@@ -95,6 +95,7 @@ export const CategoryForm = () => {
             onClick={() => {
               setDataUpdate(item);
               setIsNewCategory(true);
+              setIsNew(false);
             }}
           >
             <FaPenToSquare className="h-5" />
@@ -124,7 +125,6 @@ export const CategoryForm = () => {
   };
 
   const handleCloseModal = () => {
-    setIsNew(false);
     setIsNewCategory(false);
   };
 
