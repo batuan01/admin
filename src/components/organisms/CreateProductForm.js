@@ -1,6 +1,11 @@
 import { Controller, useForm } from "react-hook-form";
 import { ButtonModal } from "../atoms/Button";
-import { InputFormAdmin, InputModal, TextAreaBlack } from "../atoms/Input";
+import {
+  InputFormAdmin,
+  InputModal,
+  InputTable,
+  TextAreaBlack,
+} from "../atoms/Input";
 import { UploadImage } from "../molecules/UploadImage";
 import { useEffect, useState } from "react";
 import { UploadInfoImage } from "../molecules/UploadInfoImage";
@@ -8,7 +13,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import { ConvertFirebase } from "../../utils/firebase";
 import { Select } from "../atoms/Select";
 import { ComboBoxSelect } from "../atoms/ComboBoxSelect";
-import { ListCategories, PostProduct } from "../../utils/auth";
+import { GetProductDetail, ListCategories, PostProduct } from "../../utils/auth";
 import Notification from "../atoms/Notification";
 import { useRouter } from "next/router";
 import { UploadOnlyImage } from "../molecules/UploadOnlyImage";
@@ -32,9 +37,9 @@ const CreateProductForm = ({ isNew = true }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDetail = async () => {
       try {
-        const result = await ListCategories();
+        const result = await GetProductDetail();
         setDataCategory(result);
         setSelectedCategory(result[0].category_name);
       } catch (error) {
@@ -42,7 +47,7 @@ const CreateProductForm = ({ isNew = true }) => {
       }
     };
 
-    fetchData();
+    fetchDetail();
   }, []);
 
   const allNameCatogory = dataCategory?.map(
@@ -61,6 +66,7 @@ const CreateProductForm = ({ isNew = true }) => {
         return {
           color_name: data[colorKey],
           quantity: data[`quantity-${index}`],
+          price: data[`price-${index}`],
         };
       });
       return colors;
@@ -126,21 +132,24 @@ const CreateProductForm = ({ isNew = true }) => {
           </p>
         </td>
         <td className="text-center">
-          <input
+          <InputTable
+            register={register(`color-${index}`)}
             type="text"
-            className="border-x py-3 focus:outline-none pl-3 w-full text-center"
+            placeholder={"Color"}
           />
         </td>
         <td className="text-center ">
-          <input
+          <InputTable
+            register={register(`quantity-${index}`)}
             type="text"
-            className="border-r py-3 focus:outline-none pl-3 w-full text-center"
+            placeholder={"Quantity"}
           />
         </td>
         <td className="text-center ">
-          <input
+          <InputTable
+            register={register(`price-${index}`)}
             type="text"
-            className="border-r py-3 focus:outline-none pl-3 w-full text-center"
+            placeholder={"Price"}
           />
         </td>
         <td className="text-center ">
@@ -162,31 +171,32 @@ const CreateProductForm = ({ isNew = true }) => {
         <div className="px-10 pt-5">
           <div className="w-full">
             <div className="flex gap-5">
-              <div className="w-full flex gap-5 items-center">
-                <p className="text-[#3f4657] font-medium text-sm flex gap-1 w-[100px]">
-                  Caregory <span className="text-[#ff0f0f]">*</span>
-                </p>
-                <Controller
-                  methods={methods}
-                  name="caregory"
-                  control={control}
-                  // rules={{ required: "Category is required" }}
-                  render={({ field }) => {
-                    const { onChange, value, ref } = field;
-                    return (
-                      <div className="flex-grow">
-                        <ComboBoxSelect
-                          data={allNameCatogory}
-                          selected={selectedCategory}
-                          setSelected={setSelectedCategory}
-                        />
-                      </div>
-                    );
-                  }}
-                />
-
+              <div className="flex flex-col w-full">
+                <div className="w-full flex gap-5 items-center">
+                  <p className="text-[#3f4657] font-medium text-sm flex gap-1 w-[100px]">
+                    Caregory <span className="text-[#ff0f0f]">*</span>
+                  </p>
+                  <Controller
+                    methods={methods}
+                    name="caregory"
+                    control={control}
+                    rules={{ required: "Category is required" }}
+                    render={({ field }) => {
+                      const { onChange, value, ref } = field;
+                      return (
+                        <div className="flex-grow">
+                          <ComboBoxSelect
+                            data={allNameCatogory}
+                            selected={selectedCategory}
+                            setSelected={setSelectedCategory}
+                          />
+                        </div>
+                      );
+                    }}
+                  />
+                </div>
                 {errors.caregory && (
-                  <p className="text-red text-xs italic pt-1">
+                  <p className="text-red text-xs italic pt-1 ml-[120px]">
                     {errors.caregory.message}
                   </p>
                 )}
@@ -233,8 +243,9 @@ const CreateProductForm = ({ isNew = true }) => {
                 type="text"
                 placeholder={"Hard Drive"}
                 label={"Hard Drive"}
-                width={"w-[70px]"}
               />
+            </div>
+            <div className="flex gap-5 my-5">
               <InputFormAdmin
                 register={register("product_card")}
                 type="text"
@@ -246,11 +257,10 @@ const CreateProductForm = ({ isNew = true }) => {
                 type="text"
                 placeholder={"Desktop"}
                 label={"Desktop"}
-                width={"w-[50px]"}
               />
             </div>
 
-            <p className="text-[#3f4657] font-medium text-sm pb-2">
+            <p className="text-[#3f4657] font-medium text-sm pb-2 pt-2">
               Product Content
             </p>
             <TextAreaBlack
@@ -259,51 +269,6 @@ const CreateProductForm = ({ isNew = true }) => {
               className={"h-32"}
             />
           </div>
-
-          {/* <div className="flex gap-10 mt-10 p-10 rounded-lg bg-slate-300">
-            <div className="">
-              <ButtonModal
-                title={"New form"}
-                type={"button"}
-                sizeSm={true}
-                onClick={addForm}
-                textBlack
-                className={"border-black border-[1px] border-solid"}
-                icon={<FaPlusCircle />}
-              />
-              <p className="text-[#5c677e] font-medium text-sm pb-2 mt-4">
-                Product Colors
-              </p>
-            </div>
-            <div className="flex flex-col gap-5 mt-10">
-              {forms.map((form, index) => (
-                <div className="flex gap-5" key={index}>
-                  <InputFormAdmin
-                    register={register(`color-${index}`, {
-                      required: "Color name cannot be left blank",
-                    })}
-                    type="text"
-                    placeholder={"Color Name"}
-                    label={"Color Name"}
-                    required={true}
-                    errors={errors}
-                    name={`color-${index}`}
-                  />
-                  <InputFormAdmin
-                    register={register(`quantity-${index}`, {
-                      required: "Quantity cannot be left blank",
-                    })}
-                    type="text"
-                    placeholder={"Quantity"}
-                    label={"Quantity"}
-                    required={true}
-                    errors={errors}
-                    name={`quantity-${index}`}
-                  />
-                </div>
-              ))}
-            </div>
-          </div> */}
 
           <div className="mt-10 mb-5 flex justify-end">
             <ButtonModal

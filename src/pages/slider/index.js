@@ -1,4 +1,10 @@
+import { SliderForm } from "../../components/organisms/SliderForm";
+
 const SliderPage = () => {
-  return <>sdfsd</>;
+  return (
+    <>
+      <SliderForm />
+    </>
+  );
 };
 export default SliderPage;
