@@ -73,7 +73,6 @@ export const ProductForm = () => {
     "No.",
     "Name",
     "Description",
-    "Price",
     "Sale",
     "Status",
     "Gallery",
@@ -98,11 +97,6 @@ export const ProductForm = () => {
         <td className="py-3 px-5  text-center ">
           <p className="block antialiased font-sans text-sm leading-normal font-semibold">
             {item.product_content}
-          </p>
-        </td>
-        <td className="py-3 px-5  text-center ">
-          <p className="block antialiased font-sans text-sm leading-normal font-semibold">
-            {item.product_price}
           </p>
         </td>
         <td className="py-3 px-5  text-center ">

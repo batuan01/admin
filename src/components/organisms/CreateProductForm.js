@@ -89,7 +89,6 @@ const CreateProductForm = ({ isNew = true }) => {
       category_id: idCategory,
       product_sale: Number(data.product_sale) || "",
       product_name: data.product_name,
-      product_price: Number(data.product_price),
       product_content: data?.product_content,
       product_image: urlInfo[0] || "",
       product_status: 1,
