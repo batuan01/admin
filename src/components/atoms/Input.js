@@ -89,36 +89,29 @@ export const InputFormAdmin = ({
   required,
   errors,
   name,
-  width,
 }) => {
   return (
     <>
-      <div className="flex flex-col w-full">
-        <div className="w-full flex gap-5 items-center">
-          <p
-            className={`text-[#3f4657] font-medium text-sm   ${
-              width ? width : "w-[100px]"
-            }`}
-          >
-            {label} {required && <span className="text-[#ff0f0f]">*</span>}
-          </p>
-          <input
-            type={type}
-            {...register}
-            placeholder={placeholder}
-            className={`w-auto h-10 border border-stone-400 border-solid rounded-sm p-1 pl-[20px] text-base shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-500 flex-grow  ${
-              disabled ? "text-opacity-80" : "text-opacity-100"
-            } ${className} `}
-            style={{ "--tw-ring-color": "rgba(0,0,0,0.2)" }}
-            autoComplete={autoComplete}
-            disabled={disabled}
-          />
-        </div>
+      <div className="w-full flex flex-col gap-1">
+        <p className={`text-[#252F4A] font-medium text-sm }`}>
+          {label} {required && <span className="text-[#ff0f0f]">*</span>}
+        </p>
+        <input
+          type={type}
+          {...register}
+          placeholder={placeholder}
+          className={`w-auto h-10 border border-stone-400 border-solid rounded-sm p-1 pl-[20px] text-base shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-500 flex-grow  ${
+            disabled ? "text-opacity-80" : "text-opacity-100"
+          } ${className} `}
+          style={{ "--tw-ring-color": "rgba(0,0,0,0.2)" }}
+          autoComplete={autoComplete}
+          disabled={disabled}
+        />
         {required &&
           name &&
           errors[name] &&
           errors[name].type === "required" && (
-            <p className="text-red text-xs italic pt-1 ml-[120px]">
+            <p className="text-red text-xs italic pt-1">
               {errors[name].message}
             </p>
           )}

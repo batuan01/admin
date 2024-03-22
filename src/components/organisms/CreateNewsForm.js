@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { InputForm } from "../atoms/Input";
 import { CustomEditor } from "../molecules/FormEditor";
 import { ButtonModal } from "../atoms/Button";
-import { UploadInfoImage } from "../molecules/UploadInfoImage";
 import { UploadOnlyImage } from "../molecules/UploadOnlyImage";
 import { ConvertFirebase } from "../../utils/firebase";
 import Notification from "../atoms/Notification";

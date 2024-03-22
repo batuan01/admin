@@ -2,8 +2,10 @@ import { useDropzone } from "react-dropzone";
 import Notification from "../atoms/Notification";
 import { FaRegTrashCan, FaImage } from "react-icons/fa6";
 import { useState } from "react";
+import { CgClose } from "react-icons/cg";
+import { FcAddImage } from "react-icons/fc";
 
-export const UploadInfoImage = ({ name, selectedFiles, setSelectedFiles }) => {
+export const UploadInfoImage = ({ selectedFiles, setSelectedFiles }) => {
   /////// kiểm tra file ảnh////////
   function isImageByExtension(fileName) {
     const allowedExtensions = ["jpg", "jpeg", "png", "gif"];
@@ -52,20 +54,42 @@ export const UploadInfoImage = ({ name, selectedFiles, setSelectedFiles }) => {
 
   return (
     <>
-      <div {...getRootProps()} className="cursor-pointer w-full h-full">
-        <input {...getInputProps()} />
-        <div className="flex justify-center items-center text-center text-9xl p-5 rounded bg-slate-200 w-full h-full">
-          {selectedFiles.length > 0 ? (
-            <img
-              src={URL.createObjectURL(selectedFiles[0])}
-              className="h-auto w-auto"
-            />
-          ) : (
-            <FaImage />
-          )}
+      <div className="bg-white rounded-lg shadow-xl py-4 w-[300px]">
+        <div className="p-4">
+          <h2 className="text-lg font-semibold">Image</h2>
+        </div>
+        <div className="text-center pt-0 px-4">
+          <div className="bg-cover bg-center mb-3 rounded-lg flex items-center justify-center">
+            <div
+              className="h-36 w-36 bg-white shadow-2xl border border-solid border-slate-300 flex justify-center items-center relative cursor-pointer"
+              {...getRootProps()}
+            >
+              <input {...getInputProps()} />
+              {selectedFiles.length > 0 ? (
+                <img
+                  src={URL.createObjectURL(selectedFiles[0])}
+                  className="h-full w-auto object-cover"
+                />
+              ) : (
+                <FcAddImage className="text-7xl" />
+              )}
+            </div>
+
+            {selectedFiles.length > 0 ? (
+              <button
+                type="button"
+                className="inline-flex items-center justify-center w-7 h-7 rounded-full hover:bg-red hover:text-white cursor-pointer shadow-xl absolute translate-x-[70px] translate-y-[70px] bg-slate-300"
+                onClick={() => handleRemoveImage(0)}
+              >
+                <CgClose />
+              </button>
+            ) : null}
+          </div>
+          <div className="text-xs text-slate-500 pt-10">
+            Set the image. Only *.png, *.jpg and *.jpeg image files are accepted
+          </div>
         </div>
       </div>
-      <p className="text-[#5c677e] font-medium text-sm pb-2 text-center mt-2">{name}</p>
     </>
   );
 };
