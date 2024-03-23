@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { InputForm } from "../atoms/Input";
-import { CustomEditor } from "../molecules/FormEditor";
 import { ButtonModal } from "../atoms/Button";
 import { UploadOnlyImage } from "../molecules/UploadOnlyImage";
 import { ConvertFirebase } from "../../utils/firebase";
 import Notification from "../atoms/Notification";
 import { PostNews } from "../../utils/auth";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
+const CustomEditor = dynamic(
+  () => {
+    return import("../molecules/FormEditor");
+  },
+  { ssr: false }
+);
 
 export const CreateNewsForm = ({ isNew }) => {
   const [content, setContent] = useState();

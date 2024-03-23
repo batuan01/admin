@@ -9,7 +9,7 @@ const CreateProduct = () => {
         <span className="text-white">Home / Product / Create</span>
       </div>
       <div className="pb-10 mx-5 w-auto">
-        <CreateProductForm />
+        <CreateProductForm isNew={true} />
       </div>
     </>
   );

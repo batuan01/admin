@@ -1,7 +1,6 @@
 import React from "react";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import Editor from "ckeditor5-custom-build";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 const editorConfiguration = {
   toolbar: {
@@ -56,20 +55,12 @@ const editorConfiguration = {
   },
 };
 
-export const CustomEditor = ({ content, setContent }) => {
+const CustomEditor = ({ content, setContent }) => {
   return (
     <div>
-      {/* <CKEditor
-        editor={ClassicEditor}
-        config={editorConfiguration}
-        data={content}
-        onChange={(event, editor) => {
-          const data = editor.getData();
-          setContent(data);
-        }}
-      /> */}
       <CKEditor
-        editor={ClassicEditor}
+        editor={Editor}
+        config={editorConfiguration}
         data={content}
         onChange={(event, editor) => {
           const data = editor.getData();
@@ -79,3 +70,5 @@ export const CustomEditor = ({ content, setContent }) => {
     </div>
   );
 };
+
+export default CustomEditor;

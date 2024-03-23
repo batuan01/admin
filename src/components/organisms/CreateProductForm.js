@@ -23,9 +23,16 @@ import { UploadOnlyImage } from "../molecules/UploadOnlyImage";
 import { TableForm } from "../molecules/Table";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
 import { UploadInfoImage } from "../molecules/UploadInfoImage";
-import { CustomEditor } from "../molecules/FormEditor";
+import dynamic from "next/dynamic";
 
-const CreateProductForm = ({ isNew = true }) => {
+const CustomEditor = dynamic(
+  () => {
+    return import("../molecules/FormEditor");
+  },
+  { ssr: false }
+);
+
+const CreateProductForm = ({ isNew }) => {
   const {
     register,
     handleSubmit,
@@ -43,6 +50,16 @@ const CreateProductForm = ({ isNew = true }) => {
   const router = useRouter();
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await ListCategories();
+        setDataCategory(result);
+        setSelectedCategory(result[0].category_name);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
     const fetchDetail = async () => {
       try {
         const result = await GetProductDetail();
@@ -53,7 +70,11 @@ const CreateProductForm = ({ isNew = true }) => {
       }
     };
 
-    fetchDetail();
+    fetchData();
+
+    if (!isNew) {
+      fetchDetail();
+    }
   }, []);
 
   const allNameCatogory = dataCategory?.map(
@@ -125,47 +146,6 @@ const CreateProductForm = ({ isNew = true }) => {
     setForms(newForms);
   };
 
-  const dataThead = ["No.", "Name", "Quantity", "Price", "Action"];
-  const dataBody = [];
-
-  dataBody.push(
-    forms.map((item, index) => (
-      <tr key={index} className="border-b border-[#bdbdbd]">
-        <td className="text-center">
-          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
-            {index + 1}
-          </p>
-        </td>
-        <td className="text-center">
-          <InputTable
-            register={register(`color-${index}`)}
-            type="text"
-            placeholder={"Color"}
-          />
-        </td>
-        <td className="text-center ">
-          <InputTable
-            register={register(`quantity-${index}`)}
-            type="text"
-            placeholder={"Quantity"}
-          />
-        </td>
-        <td className="text-center ">
-          <InputTable
-            register={register(`price-${index}`)}
-            type="text"
-            placeholder={"Price"}
-          />
-        </td>
-        <td className="text-center ">
-          <button onClick={() => removeForm(index)}>
-            <HiArchiveBoxXMark className="h-5 hover:text-red" />
-          </button>
-        </td>
-      </tr>
-    ))
-  );
-
   return (
     <>
       <form onSubmit={handleSubmit(isNew ? handleCreate : handleUpdate)}>
@@ -190,139 +170,6 @@ const CreateProductForm = ({ isNew = true }) => {
             />
           </div>
         </div>
-
-        {/* <div className="px-10 pt-5">
-          <div className="w-full">
-            <div className="flex gap-5">
-              <div className="flex flex-col w-full">
-                <div className="w-full flex gap-5 items-center">
-                  <p className="text-[#3f4657] font-medium text-sm flex gap-1 w-[100px]">
-                    Caregory <span className="text-[#ff0f0f]">*</span>
-                  </p>
-                  <Controller
-                    methods={methods}
-                    name="caregory"
-                    control={control}
-                    rules={{ required: "Category is required" }}
-                    render={({ field }) => {
-                      const { onChange, value, ref } = field;
-                      return (
-                        <div className="flex-grow">
-                          <ComboBoxSelect
-                            data={allNameCatogory}
-                            selected={selectedCategory}
-                            setSelected={setSelectedCategory}
-                          />
-                        </div>
-                      );
-                    }}
-                  />
-                </div>
-                {errors.caregory && (
-                  <p className="text-red text-xs italic pt-1 ml-[120px]">
-                    {errors.caregory.message}
-                  </p>
-                )}
-              </div>
-
-              <InputFormAdmin
-                register={register("product_name", {
-                  required: "Product Name cannot be left blank",
-                })}
-                type="text"
-                placeholder={"Name"}
-                label={"Product Name"}
-                required={true}
-                errors={errors}
-                name={"product_name"}
-              />
-            </div>
-            <div className="flex gap-5 my-5">
-              <InputFormAdmin
-                register={register("product_sale")}
-                type="text"
-                placeholder={"Product Sale"}
-                label={"Product Sale"}
-              />
-              <div className="w-full flex items-center gap-5">
-                <p className="text-[#3f4657] font-medium text-sm w-[100px]">
-                  Product Image
-                </p>
-                <UploadOnlyImage
-                  selectedFiles={selectedFilesInfo}
-                  setSelectedFiles={setSelectedFilesInfo}
-                />
-              </div>
-            </div>
-            <div className="flex gap-5 my-5">
-              <InputFormAdmin
-                register={register("product_ram")}
-                type="text"
-                placeholder={"Product ram"}
-                label={"Product Ram"}
-              />
-              <InputFormAdmin
-                register={register("hard_drive")}
-                type="text"
-                placeholder={"Hard Drive"}
-                label={"Hard Drive"}
-              />
-            </div>
-            <div className="flex gap-5 my-5">
-              <InputFormAdmin
-                register={register("product_card")}
-                type="text"
-                placeholder={"Product Card"}
-                label={"Product Card"}
-              />
-              <InputFormAdmin
-                register={register("desktop")}
-                type="text"
-                placeholder={"Desktop"}
-                label={"Desktop"}
-              />
-            </div>
-
-            <p className="text-[#3f4657] font-medium text-sm pb-2 pt-2">
-              Product Content
-            </p>
-            <TextAreaBlack
-              register={register("product_content")}
-              placeholder={"Product Content"}
-              className={"h-32"}
-            />
-          </div>
-
-          <div className="mt-10 mb-5 flex justify-end">
-            <ButtonModal
-              title={"Add New Color"}
-              type={"button"}
-              sizeSm={true}
-              onClick={addForm}
-              textBlack
-              className={"border-black border-[1px] border-solid"}
-              icon={<FaPlusCircle />}
-            />
-          </div>
-          <TableForm dataThead={dataThead} dataBody={dataBody} />
-
-          <div className="flex justify-end mt-10 gap-4">
-            <ButtonModal
-              title={"Cancel"}
-              type={"button"}
-              sizeSm={true}
-              onClick={() => handleClose()}
-              textBlack={true}
-              className={"border-black border-[1px] bg-slate-300 w-20"}
-            />
-            <ButtonModal
-              title={isNew ? "Create" : "Update"}
-              type={"submit"}
-              sizeSm={true}
-              className={"w-20 bg-blue-500"}
-            />
-          </div>
-        </div> */}
 
         <div className="flex gap-10">
           <div className="w-[300px]">
@@ -444,14 +291,14 @@ const CreateProductForm = ({ isNew = true }) => {
                       onClick={() => removeForm(index)}
                       className="mt-6 bg-slate-400 p-[10px] rounded"
                     >
-                      <HiArchiveBoxXMark className="h-5 hover:text-red" />
+                      <HiArchiveBoxXMark className="h-5 hover:text-white" />
                     </button>
                   ) : (
                     <div className="w-[120px]"></div>
                   )}
                 </div>
               ))}
-              <div className="pt-5">
+              <div className="pt-5 mr-[56px]">
                 <InputFormAdmin
                   register={register("product_sale")}
                   type="text"

@@ -9,9 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^41.2.1",
     "@ckeditor/ckeditor5-react": "^6.2.0",
     "@headlessui/react": "^1.7.17",
+    "@next-tools/dynamic": "^0.0.11",
     "aos": "^3.0.0-beta.6",
     "axios": "^1.6.2",
     "ckeditor5-custom-build": "^0.0.6",

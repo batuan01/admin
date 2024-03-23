@@ -93,7 +93,7 @@ export const InputFormAdmin = ({
   return (
     <>
       <div className="w-full flex flex-col gap-1">
-        <p className={`text-[#252F4A] font-medium text-sm }`}>
+        <p className={`text-[#252F4A] font-semibold text-sm }`}>
           {label} {required && <span className="text-[#ff0f0f]">*</span>}
         </p>
         <input
