@@ -21,7 +21,7 @@ export const NewsForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReload, setIsReload] = useState(false);
   const [dataUpdate, setDataUpdate] = useState();
-  const [isNew, setIsNew] = useState(false);
+  const [dataFilter, setDataFilter] = useState();
 
   const router = useRouter();
 
@@ -30,6 +30,7 @@ export const NewsForm = () => {
       try {
         const result = await GetNews();
         setDataAll(result);
+        setDataFilter(result.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -55,7 +56,7 @@ export const NewsForm = () => {
   const dataBody = [];
 
   dataBody.push(
-    dataAll?.data.map((item, index) => (
+    dataFilter?.map((item, index) => (
       <tr key={index} className="border-b border-[#bdbdbd]">
         <td className="py-3 px-5  text-center">
           <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
@@ -109,7 +110,11 @@ export const NewsForm = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log(event.target.value);
+      const inputValue = event.target.value.toLowerCase();
+      const dataFilterName = dataAll?.data.filter((news) =>
+        news.news_name.toLowerCase().includes(inputValue)
+      );
+      setDataFilter(dataFilterName);
     }
   };
 
@@ -120,6 +125,11 @@ export const NewsForm = () => {
           type="text"
           placeholder={"Search"}
           onKeyDown={handleKeyDown}
+          onChange={(event) => {
+            if (event.target.value === "") {
+              setDataFilter(dataAll?.data);
+            }
+          }}
         />
 
         <div className="flex justify-end">

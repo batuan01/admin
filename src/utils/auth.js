@@ -153,6 +153,18 @@ export const UpdateProductsStatus = async (payload) => {
   }
 };
 
+export const DeleteProductColor = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.deleteProductColor(payload);
+    if (status === 200) {
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
 /* <GALLERY> */
 export const ListGalleries = async (payload) => {
   try {
@@ -361,6 +373,57 @@ export const PostCoupon = async (payload) => {
 export const UpdateCoupon = async (payload) => {
   try {
     const { data, status } = await SERVICES.updateCoupon(payload);
+    if (status === 200) {
+      return data;
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+/* <SLIDER> */
+export const GetSliders = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.getSliders(payload);
+    if (status === 200) {
+      return data;
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+export const DeleteSlider = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.deleteSlider(payload);
+    if (status === 200) {
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+export const PostSlider = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.postSlider(payload);
+    if (status === 200) {
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+export const UpdateSlider = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.updateSlider(payload);
     if (status === 200) {
       return data;
     } else {

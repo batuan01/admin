@@ -31,6 +31,7 @@ export const ProductForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReload, setIsReload] = useState(false);
   const [dataUpdate, setDataUpdate] = useState();
+  const [dataFilter, setDataFilter] = useState();
 
   const router = useRouter();
 
@@ -48,6 +49,7 @@ export const ProductForm = () => {
       try {
         const result = await ListProducts();
         setDataAll(result.data);
+        setDataFilter(result.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -69,19 +71,11 @@ export const ProductForm = () => {
     Notification.success("Updated status successfully!");
   };
 
-  const dataThead = [
-    "No.",
-    "Name",
-    "Description",
-    "Sale",
-    "Status",
-    "Gallery",
-    "Action",
-  ];
+  const dataThead = ["No.", "Name", "Sale", "Status", "Gallery", "Action"];
   const dataBody = [];
 
   dataBody.push(
-    dataAll?.data?.map((item, index) => (
+    dataFilter?.map((item, index) => (
       <tr key={index} className="border-b border-[#bdbdbd]">
         <td className="py-3 px-5  text-center">
           <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
@@ -90,13 +84,8 @@ export const ProductForm = () => {
         </td>
         <td className="py-3 px-5  text-center ">
           <p className="antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold flex gap-2 items-center justify-center">
-            <img src={item.product_image} className="h-10 w-auto" />{" "}
+            <img src={item.product_image} className="h-10 w-auto" />
             {item.product_name}
-          </p>
-        </td>
-        <td className="py-3 px-5  text-center ">
-          <p className="block antialiased font-sans text-sm leading-normal font-semibold">
-            {item.product_content}
           </p>
         </td>
         <td className="py-3 px-5  text-center ">
@@ -111,11 +100,21 @@ export const ProductForm = () => {
           />
         </td>
         <td className="py-3 px-5  text-center ">
-          <Link href={"/product/" + item.product_id + "/gallery"}>Upload</Link>
+          <Link href={"/product/" + item.product_id + "/gallery"}>
+            <ButtonModal
+              title={"Upload"}
+              type={"button"}
+              sizeSm={true}
+              textBlack
+              className={
+                "bg-blue-200 text-[#1B84FF] hover:bg-[#1B84FF] hover:text-white w-full"
+              }
+            />
+          </Link>
         </td>
         <td className="py-3 px-5  text-center ">
-          <p className="flex justify-center gap-5">
-            <Link href={"/product/" + item.product_id}>
+          <p className="flex justify-center gap-5 cursor-pointer">
+            <Link href={"/product/" + item.product_id + "/update"}>
               <FaPenToSquare className="h-5" />
             </Link>
             <button
@@ -145,7 +144,11 @@ export const ProductForm = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log(event.target.value);
+      const inputValue = event.target.value.toLowerCase();
+      const dataFilterName = dataAll?.data.filter((product) =>
+        product.product_name.toLowerCase().includes(inputValue)
+      );
+      setDataFilter(dataFilterName);
     }
   };
 
@@ -156,6 +159,11 @@ export const ProductForm = () => {
           type="text"
           placeholder={"Search"}
           onKeyDown={handleKeyDown}
+          onChange={(event) => {
+            if (event.target.value === "") {
+              setDataFilter(dataAll?.data);
+            }
+          }}
         />
 
         <div className="flex justify-end">
@@ -172,7 +180,7 @@ export const ProductForm = () => {
 
       <div className="mx-10">
         <TableForm dataThead={dataThead} dataBody={dataBody} />
-        {(!dataAll || dataAll?.length === 0) && (
+        {(!dataAll || dataAll?.data.length === 0) && (
           <p className="text-center font-medium py-10">No data</p>
         )}
       </div>

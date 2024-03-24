@@ -89,7 +89,7 @@ export const UserForm = () => {
       </div>
       <div className="mx-10">
         <TableForm dataThead={dataThead} dataBody={dataBody} />
-        {(!dataAll || dataAll?.length === 0) && (
+        {(!dataAll || dataAll?.data.length === 0) && (
           <p className="text-center font-medium py-10">No data</p>
         )}
       </div>

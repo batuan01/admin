@@ -144,6 +144,7 @@ export const InputSearch = ({
   className,
   autoComplete,
   onKeyDown,
+  onChange
 }) => {
   return (
     <>
@@ -158,6 +159,7 @@ export const InputSearch = ({
           style={{ "--tw-ring-color": "rgba(0,0,0,0.6)" }}
           autoComplete={autoComplete}
           onKeyDown={onKeyDown}
+          onChange={onChange}
         />
       </div>
     </>

@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
 import { useRouter } from "next/router";
 import { ConvertFirebase } from "../../../../utils/firebase";
-import { DeleteGallery, ListGalleries, PostGalleries } from "../../../../utils/auth";
+import {
+  DeleteGallery,
+  ListGalleries,
+  PostGalleries,
+} from "../../../../utils/auth";
 import Notification from "../../../../components/atoms/Notification";
 import { UploadImage } from "../../../../components/molecules/UploadImage";
 import { ButtonModal } from "../../../../components/atoms/Button";
@@ -67,10 +71,10 @@ const GalleryPage = ({ isNew = true }) => {
   return (
     <>
       <form onSubmit={handleSubmit(handleCreate)}>
-        <div className="mx-auto pb-10">
-          <p className="text-[#5c677e] font-bold text-xl text-center pb-5">
-            Product Galleries
-          </p>
+        <div className="mx-auto pb-10 px-10">
+          <div className="border-b border-blue-400 bg-[#252525] flex justify-between items-center p-5 sticky top-0 z-[1]">
+            <p className="text-white text-2xl font-bold ">Product Galleries</p>
+          </div>
 
           <div className="flex flex-wrap -mx-4">
             {dataAllImage?.map((image, index) => (

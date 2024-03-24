@@ -26,6 +26,7 @@ export const CategoryForm = () => {
   const [isReload, setIsReload] = useState(false);
   const [dataUpdate, setDataUpdate] = useState();
   const [isNew, setIsNew] = useState(false);
+  const [dataFilter, setDataFilter] = useState();
 
   const {
     register,
@@ -41,6 +42,7 @@ export const CategoryForm = () => {
       try {
         const result = await ListCategories();
         setDataAll(result);
+        setDataFilter(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -67,7 +69,7 @@ export const CategoryForm = () => {
   const dataBody = [];
 
   dataBody.push(
-    dataAll?.map((item, index) => (
+    dataFilter?.map((item, index) => (
       <tr key={index} className="border-b border-[#bdbdbd]">
         <td className="py-3 px-5  text-center">
           <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
@@ -220,7 +222,11 @@ export const CategoryForm = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log(event.target.value);
+      const inputValue = event.target.value.toLowerCase();
+      const dataFilterName = dataAll?.filter((category) =>
+        category.category_name.toLowerCase().includes(inputValue)
+      );
+      setDataFilter(dataFilterName);
     }
   };
 
@@ -231,6 +237,11 @@ export const CategoryForm = () => {
           type="text"
           placeholder={"Search"}
           onKeyDown={handleKeyDown}
+          onChange={(event) => {
+            if (event.target.value === "") {
+              setDataFilter(dataAll);
+            }
+          }}
         />
 
         <div className="flex justify-end">

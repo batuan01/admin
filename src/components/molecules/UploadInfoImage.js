@@ -52,6 +52,21 @@ export const UploadInfoImage = ({ selectedFiles, setSelectedFiles }) => {
     });
   };
 
+  function isLink(value) {
+    const urlPattern = /^(?:\w+:)?\/\/([^\s.]+\.\S{2}|localhost[:?\d]*)\S*$/;
+    return urlPattern.test(value);
+  }
+
+  let imgSrc;
+
+  if (isLink(selectedFiles[0])) {
+    imgSrc = selectedFiles[0];
+  } else {
+    if (selectedFiles[0] && typeof selectedFiles[0] === "object") {
+      imgSrc = URL.createObjectURL(selectedFiles[0]);
+    }
+  }
+
   return (
     <>
       <div className="bg-white rounded-lg shadow-xl py-4 w-[300px]">
@@ -66,10 +81,7 @@ export const UploadInfoImage = ({ selectedFiles, setSelectedFiles }) => {
             >
               <input {...getInputProps()} />
               {selectedFiles.length > 0 ? (
-                <img
-                  src={URL.createObjectURL(selectedFiles[0])}
-                  className="h-full w-auto object-cover"
-                />
+                <img src={imgSrc} className="h-full w-auto object-cover" />
               ) : (
                 <FcAddImage className="text-7xl" />
               )}

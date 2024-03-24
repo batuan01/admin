@@ -13,9 +13,11 @@ import { ConvertFirebase } from "../../utils/firebase";
 import { Select } from "../atoms/Select";
 import { ComboBoxSelect } from "../atoms/ComboBoxSelect";
 import {
+  DeleteProductColor,
   GetProductDetail,
   ListCategories,
   PostProduct,
+  UpdateProducts,
 } from "../../utils/auth";
 import Notification from "../atoms/Notification";
 import { useRouter } from "next/router";
@@ -39,6 +41,7 @@ const CreateProductForm = ({ isNew }) => {
     reset,
     methods,
     control,
+    getValues,
     formState: { errors },
   } = useForm();
 
@@ -46,8 +49,11 @@ const CreateProductForm = ({ isNew }) => {
   const [selectedCategory, setSelectedCategory] = useState();
   const [dataCategory, setDataCategory] = useState();
   const [content, setContent] = useState();
+  const [dataUpdate, setDataUpdate] = useState();
+  const [isReload, setIsReload] = useState(false);
 
   const router = useRouter();
+  const query = router.query;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,23 +65,22 @@ const CreateProductForm = ({ isNew }) => {
         console.error("Error fetching data:", error);
       }
     };
-
+    fetchData();
+  }, []);
+  useEffect(() => {
     const fetchDetail = async () => {
       try {
-        const result = await GetProductDetail();
-        setDataCategory(result);
-        setSelectedCategory(result[0].category_name);
+        const result = await GetProductDetail({ product_id: query.id });
+        setDataUpdate(result);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData();
-
-    if (!isNew) {
+    if (!isNew && query.id) {
       fetchDetail();
     }
-  }, []);
+  }, [query.id, isReload]);
 
   const allNameCatogory = dataCategory?.map(
     (category) => category.category_name
@@ -116,7 +121,7 @@ const CreateProductForm = ({ isNew }) => {
       category_id: idCategory,
       product_sale: Number(data.product_sale) || "",
       product_name: data.product_name,
-      product_content: data?.product_content,
+      product_content: content || "",
       product_image: urlInfo[0] || "",
       product_status: 1,
       product_ram: data.product_ram || "",
@@ -125,20 +130,68 @@ const CreateProductForm = ({ isNew }) => {
       desktop: data.desktop || "",
       colors: colors,
     };
+
     await PostProduct(dataSend);
     Notification.success("Add product successfully!");
     handleClose();
   };
-  const handleUpdate = async (data) => {};
+  const handleUpdate = async (data) => {
+    let urlInfo;
+    if (typeof selectedFilesInfo[0] === "object") {
+      urlInfo = await ConvertFirebase({ images: selectedFilesInfo });
+    } else {
+      urlInfo = selectedFilesInfo;
+    }
+
+    const colors = convertColors(data);
+
+    const idCategory = dataCategory.find(
+      (e) => e.category_name === selectedCategory
+    )?.category_id;
+
+    const dataSend = {
+      product_id: query.id,
+      category_id: idCategory,
+      product_sale: Number(data.product_sale) || "",
+      product_name: data.product_name,
+      product_content: content || "",
+      product_image: urlInfo[0] || "",
+      product_status: data.product_status,
+      product_ram: data.product_ram || "",
+      hard_drive: data.hard_drive || "",
+      product_card: data.product_card || "",
+      desktop: data.desktop || "",
+      colors: colors,
+    };
+
+    await UpdateProducts(dataSend);
+    Notification.success("Update product successfully!");
+    handleClose();
+  };
 
   const handleClose = () => {
     router.push("/product");
   };
 
-  const [forms, setForms] = useState([{}]);
+  const [forms, setForms] = useState([
+    {
+      product_color_id: "",
+      color_id: "",
+      quantity: "",
+      product_price: "",
+    },
+  ]);
 
   const addForm = () => {
-    setForms([...forms, {}]);
+    setForms([
+      ...forms,
+      {
+        product_color_id: "",
+        color_id: "",
+        quantity: "",
+        product_price: "",
+      },
+    ]);
   };
 
   const removeForm = (index) => {
@@ -146,10 +199,73 @@ const CreateProductForm = ({ isNew }) => {
     setForms(newForms);
   };
 
+  const handleRemoveColor = async (item) => {
+    await DeleteProductColor({ product_color_id: item.product_color_id });
+    setIsReload(!isReload);
+    Notification.success("Delete color successfully!");
+  };
+
+  useEffect(() => {
+    if (isNew) {
+      reset({
+        product_sale: null,
+        product_name: null,
+        product_content: null,
+        product_image: null,
+        product_status: 1,
+        product_ram: null,
+        hard_drive: null,
+        product_card: null,
+        desktop: null,
+      });
+    } else {
+      const objResetColor = {};
+
+      dataUpdate?.data.product_colors.forEach((productColor, index) => {
+        const colorName = dataUpdate?.colors.find(
+          (color) => color.color_id === productColor.color_id
+        )?.color_name;
+        if (colorName) {
+          objResetColor[`product-color-${index}`] =
+            productColor.product_color_id;
+          objResetColor[`color-${index}`] = colorName;
+          objResetColor[`quantity-${index}`] = productColor.quantity;
+          objResetColor[`price-${index}`] = productColor.product_price;
+        }
+      });
+
+      reset({
+        category_id: dataUpdate?.data.category_name,
+        product_name: dataUpdate?.data.product_name,
+        product_sale: dataUpdate?.data.product_sale || "",
+        product_status: dataUpdate?.data.product_status,
+        product_ram: dataUpdate?.data.product_detail.product_ram || "",
+        hard_drive: dataUpdate?.data.product_detail.hard_drive || "",
+        product_card: dataUpdate?.data.product_detail.product_card || "",
+        desktop: dataUpdate?.data.product_detail.desktop || "",
+        ...objResetColor,
+      });
+      if (dataUpdate?.data.product_content) {
+        setContent(dataUpdate?.data.product_content);
+      }
+      if (dataUpdate?.data.product_image) {
+        setSelectedFilesInfo([dataUpdate?.data.product_image]);
+      }
+      setForms(
+        dataUpdate?.data.product_colors.map((data) => ({
+          product_color_id: data.product_color_id,
+          color_id: data.color_id,
+          quantity: data.quantity,
+          product_price: data.product_price,
+        }))
+      );
+    }
+  }, [dataUpdate, isNew]);
+
   return (
     <>
       <form onSubmit={handleSubmit(isNew ? handleCreate : handleUpdate)}>
-        <div className="border-b border-blue-400 bg-[#252525] flex justify-between items-center p-5">
+        <div className="border-b border-blue-400 bg-[#252525] flex justify-between items-center p-5 sticky top-0 z-[1]">
           <p className="text-white text-2xl font-bold ">
             {isNew ? "Create" : "Update"} Product
           </p>
@@ -186,7 +302,7 @@ const CreateProductForm = ({ isNew }) => {
                 methods={methods}
                 name="caregory"
                 control={control}
-                rules={{ required: "Category is required" }}
+                // rules={{ required: "Category is required" }}
                 render={({ field }) => {
                   const { onChange, value, ref } = field;
                   return (
@@ -251,53 +367,65 @@ const CreateProductForm = ({ isNew }) => {
                   icon={<FaPlusCircle />}
                 />
               </div>
-              {forms.map((form, index) => (
-                <div className="flex gap-5 items-center mt-5" key={index}>
-                  <InputFormAdmin
-                    register={register(`color-${index}`, {
-                      required: "Color name cannot be left blank",
-                    })}
-                    type="text"
-                    placeholder={"Color Name"}
-                    label={"Color Name"}
-                    required={true}
-                    errors={errors}
-                    name={`color-${index}`}
-                  />
-                  <InputFormAdmin
-                    register={register(`quantity-${index}`, {
-                      required: "Quantity cannot be left blank",
-                    })}
-                    type="text"
-                    placeholder={"Quantity"}
-                    label={"Quantity"}
-                    required={true}
-                    errors={errors}
-                    name={`quantity-${index}`}
-                  />
-                  <InputFormAdmin
-                    register={register(`price-${index}`, {
-                      required: "Price cannot be left blank",
-                    })}
-                    type="text"
-                    placeholder={"price"}
-                    label={"Price"}
-                    required={true}
-                    errors={errors}
-                    name={`price-${index}`}
-                  />
-                  {index !== 0 ? (
-                    <button
-                      onClick={() => removeForm(index)}
-                      className="mt-6 bg-slate-400 p-[10px] rounded"
-                    >
-                      <HiArchiveBoxXMark className="h-5 hover:text-white" />
-                    </button>
-                  ) : (
-                    <div className="w-[120px]"></div>
-                  )}
-                </div>
-              ))}
+              {forms?.map((item, index) => {
+                return (
+                  <div className="flex gap-5 items-center mt-5" key={index}>
+                    <InputFormAdmin
+                      register={register(`color-${index}`, {
+                        required: "Color name cannot be left blank",
+                      })}
+                      type="text"
+                      placeholder={"Color Name"}
+                      label={"Color Name"}
+                      required={true}
+                      errors={errors}
+                      name={`color-${index}`}
+                    />
+                    <InputFormAdmin
+                      register={register(`quantity-${index}`, {
+                        required: "Quantity cannot be left blank",
+                      })}
+                      type="text"
+                      placeholder={"Quantity"}
+                      label={"Quantity"}
+                      required={true}
+                      errors={errors}
+                      name={`quantity-${index}`}
+                    />
+                    <InputFormAdmin
+                      register={register(`price-${index}`, {
+                        required: "Price cannot be left blank",
+                      })}
+                      type="text"
+                      placeholder={"price"}
+                      label={"Price"}
+                      required={true}
+                      errors={errors}
+                      name={`price-${index}`}
+                    />
+                    <input
+                      {...register(`product-color-${index}`)}
+                      type="hidden"
+                      className={"w-0"}
+                    />
+                    {index === 0 ? (
+                      <div className="w-[120px]"></div>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          removeForm(index);
+                          if (item.product_color_id !== "" && !isNew) {
+                            handleRemoveColor(item);
+                          }
+                        }}
+                        className="mt-6 bg-slate-400 p-[10px] rounded"
+                      >
+                        <HiArchiveBoxXMark className="h-5 hover:text-white" />
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
               <div className="pt-5 mr-[56px]">
                 <InputFormAdmin
                   register={register("product_sale")}

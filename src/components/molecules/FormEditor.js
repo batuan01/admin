@@ -55,7 +55,7 @@ const editorConfiguration = {
   },
 };
 
-const CustomEditor = ({ content, setContent }) => {
+const CustomEditor = ({ content, setContent, height }) => {
   return (
     <div>
       <CKEditor
@@ -65,6 +65,11 @@ const CustomEditor = ({ content, setContent }) => {
         onChange={(event, editor) => {
           const data = editor.getData();
           setContent(data);
+        }}
+        onReady={(editor) => {
+          if (height) {
+            editor.ui.view.editable.element.style.minHeight = `${height}px`;
+          }
         }}
       />
     </div>

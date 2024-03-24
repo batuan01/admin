@@ -62,6 +62,12 @@ const SERVICES = {
       payload,
       "put"
     ),
+  deleteProductColor: (payload) =>
+    mainRequest(
+      `/products/color/${payload.product_color_id}/`,
+      payload,
+      "delete"
+    ),
 
   /* <GALLERIES> */
   listGalleries: (payload) =>
@@ -100,6 +106,14 @@ const SERVICES = {
   postCoupon: (payload) => mainRequest(`/coupon/`, payload, "post"),
   updateCoupon: (payload) =>
     mainRequest(`/coupon/${payload.coupon_id}/`, payload, "put"),
+
+  /* <SLIDER> */
+  getSliders: (payload) => mainRequest(`/sliders/`, payload, "get"),
+  deleteSlider: (payload) =>
+    mainRequest(`/sliders/${payload.slider_id}/`, payload, "delete"),
+  postSlider: (payload) => mainRequest(`/sliders/`, payload, "post"),
+  updateSlider: (payload) =>
+    mainRequest(`/sliders/${payload.slider_id}/`, payload, "put"),
 };
 
 export default SERVICES;
