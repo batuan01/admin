@@ -141,6 +141,10 @@ export const CategoryForm = () => {
     await handleCloseModal();
     setIsReload(!isReload);
     Notification.success("Create category successfully!");
+    reset({
+      name: null,
+      description: null,
+    });
   };
 
   const handleUpdate = async (data) => {
@@ -154,6 +158,10 @@ export const CategoryForm = () => {
     handleCloseModal();
     setIsReload(!isReload);
     Notification.success("Update category successfully!");
+    reset({
+      name: null,
+      description: null,
+    });
   };
 
   const ContentModal = (

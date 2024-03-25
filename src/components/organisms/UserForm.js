@@ -48,8 +48,9 @@ export const UserForm = () => {
           </p>
         </td>
         <td className="py-3 px-5  text-center ">
-          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
-            {item.customer_name}
+          <p className="antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold flex gap-2 items-center justify-center">
+            <img src={item.customer_image} className="h-10 w-auto" />
+            {item.customer_fullname}
           </p>
         </td>
         <td className="py-3 px-5  text-center ">

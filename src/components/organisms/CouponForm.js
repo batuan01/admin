@@ -6,6 +6,7 @@ import {
   GetCoupon,
   GetCustomers,
   PostCoupon,
+  UpdateCoupon,
 } from "../../utils/auth";
 import { HiArchiveBoxXMark } from "react-icons/hi2";
 import { ConfirmDelete } from "../molecules/ConfirmDelete";
@@ -17,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { InputFormAdmin, InputModal, InputSearch } from "../atoms/Input";
 import { Modal } from "../molecules/Modal";
 import { RandomTextGenerator } from "../atoms/Text";
+import { FormatPrice } from "../atoms/FormatPrice";
 
 export const CouponForm = () => {
   const [dataAll, setDataAll] = useState();
@@ -25,7 +27,8 @@ export const CouponForm = () => {
   const [dataUpdate, setDataUpdate] = useState();
   const [isNew, setIsNew] = useState(false);
   const [isNewCoupon, setIsNewCoupon] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(getCurrentDate());
+  const [selectedDate, setSelectedDate] = useState();
+  const [dataFilter, setDataFilter] = useState();
 
   const {
     register,
@@ -40,6 +43,7 @@ export const CouponForm = () => {
       try {
         const result = await GetCoupon();
         setDataAll(result);
+        setDataFilter(result.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -62,7 +66,7 @@ export const CouponForm = () => {
   const dataBody = [];
 
   dataBody.push(
-    dataAll?.data?.map((item, index) => (
+    dataFilter?.map((item, index) => (
       <tr key={index} className="border-b border-[#bdbdbd]">
         <td className="py-3 px-5  text-center">
           <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
@@ -76,7 +80,7 @@ export const CouponForm = () => {
         </td>
         <td className="py-3 px-5  text-center ">
           <p className="block antialiased font-sans text-sm leading-normal font-semibold">
-            {item.coupon_discount}
+            {FormatPrice(item.coupon_discount)}
           </p>
         </td>
         <td className="py-3 px-5  text-center ">
@@ -88,8 +92,9 @@ export const CouponForm = () => {
         <td className="py-3 px-5  text-center  flex justify-center gap-5">
           <button
             onClick={() => {
-              setIsOpen(true);
+              setIsNewCoupon(true);
               setDataUpdate(item);
+              setIsNew(false);
             }}
           >
             <FaPenToSquare className="h-5" />
@@ -106,6 +111,7 @@ export const CouponForm = () => {
       </tr>
     ))
   );
+
   const handleCreate = async (data) => {
     const dataSend = {
       coupon_code: data.coupon_code,
@@ -121,7 +127,22 @@ export const CouponForm = () => {
       coupon_discount: null,
     });
   };
-  const handleUpdate = () => {};
+  const handleUpdate = async (data) => {
+    const dataSend = {
+      coupon_id: dataUpdate.coupon_id,
+      coupon_code: data.coupon_code,
+      coupon_discount: data.coupon_discount,
+      coupon_expiry_date: selectedDate,
+    };
+    await UpdateCoupon(dataSend);
+    Notification.success("Update coupon successfully!");
+    setIsReload(!isReload);
+    setIsNewCoupon(false);
+    reset({
+      coupon_code: null,
+      coupon_discount: null,
+    });
+  };
 
   const randomText = () => {
     const text = RandomTextGenerator({ length: 6 });
@@ -196,7 +217,7 @@ export const CouponForm = () => {
           sizeSm={true}
           onClick={() => handleCloseModal()}
           textBlack={true}
-          className={"border-black border-[1px] bg-slate-300 w-20"}
+          className={"bg-slate-300 w-20"}
         />
         <ButtonModal
           title={isNew ? "Create" : "Update"}
@@ -209,27 +230,36 @@ export const CouponForm = () => {
   );
 
   useEffect(() => {
-    // if (isNew) {
-    //   reset({
-    //     name: null,
-    //     description: null,
-    //   });
-    // } else {
-    //   reset({
-    //     name: dataUpdate?.category_name || "",
-    //     description: dataUpdate?.category_desc || "",
-    //   });
-    // }
+    if (isNew) {
+      reset({
+        coupon_code: null,
+        coupon_discount: null,
+      });
+      setSelectedDate(getCurrentDate());
+    } else {
+      reset({
+        coupon_code: dataUpdate?.coupon_code || "",
+        coupon_discount: dataUpdate?.coupon_discount || "",
+      });
+      setSelectedDate(dataUpdate?.coupon_expiry_date);
+    }
   }, [dataUpdate, isNew]);
 
   const handleCloseModal = () => {
     setIsNewCoupon(false);
-    reset();
+    reset({
+      coupon_code: null,
+      coupon_discount: null,
+    });
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log(event.target.value);
+      const inputValue = event.target.value.toLowerCase();
+      const dataFilterName = dataAll?.data.filter((coupon) =>
+        coupon.coupon_code.toLowerCase().includes(inputValue)
+      );
+      setDataFilter(dataFilterName);
     }
   };
 
@@ -240,6 +270,11 @@ export const CouponForm = () => {
           type="text"
           placeholder={"Search"}
           onKeyDown={handleKeyDown}
+          onChange={(event) => {
+            if (event.target.value === "") {
+              setDataFilter(dataAll?.data);
+            }
+          }}
         />
 
         <div className="flex justify-end">
