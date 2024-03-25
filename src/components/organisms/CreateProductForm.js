@@ -221,7 +221,7 @@ const CreateProductForm = ({ isNew }) => {
     } else {
       const objResetColor = {};
 
-      dataUpdate?.data.product_colors.forEach((productColor, index) => {
+      dataUpdate?.data.product_colors?.forEach((productColor, index) => {
         const colorName = dataUpdate?.colors.find(
           (color) => color.color_id === productColor.color_id
         )?.color_name;
@@ -239,10 +239,10 @@ const CreateProductForm = ({ isNew }) => {
         product_name: dataUpdate?.data.product_name,
         product_sale: dataUpdate?.data.product_sale || "",
         product_status: dataUpdate?.data.product_status,
-        product_ram: dataUpdate?.data.product_detail.product_ram || "",
-        hard_drive: dataUpdate?.data.product_detail.hard_drive || "",
-        product_card: dataUpdate?.data.product_detail.product_card || "",
-        desktop: dataUpdate?.data.product_detail.desktop || "",
+        product_ram: dataUpdate?.data.product_detail?.product_ram || "",
+        hard_drive: dataUpdate?.data.product_detail?.hard_drive || "",
+        product_card: dataUpdate?.data.product_detail?.product_card || "",
+        desktop: dataUpdate?.data.product_detail?.desktop || "",
         ...objResetColor,
       });
       if (dataUpdate?.data.product_content) {
@@ -252,7 +252,7 @@ const CreateProductForm = ({ isNew }) => {
         setSelectedFilesInfo([dataUpdate?.data.product_image]);
       }
       setForms(
-        dataUpdate?.data.product_colors.map((data) => ({
+        dataUpdate?.data.product_colors?.map((data) => ({
           product_color_id: data.product_color_id,
           color_id: data.color_id,
           quantity: data.quantity,
