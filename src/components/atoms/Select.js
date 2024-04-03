@@ -64,7 +64,7 @@ export const pushData = ({ arrayForm, data }) => {
         >
           {({ selected, active }) => (
             <>
-              <div className="flex items-center">
+              <div className="flex items-center w-fit">
                 <span
                   className={classNames(
                     selected ? "font-semibold" : "font-normal",
