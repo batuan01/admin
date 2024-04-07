@@ -81,6 +81,16 @@ const SERVICES = {
   getOrders: (payload) => mainRequest(`/order/`, payload, "get"),
   updateOrderStatus: (payload) =>
     mainRequest(`/order/${payload.order_id}/`, payload, "put"),
+  getOrdersDetail: (payload) =>
+    mainRequest(`/order/detail/${payload.order_id}/`, payload, "get"),
+  getDailySales: (payload) =>
+    mainRequest(
+      `/dailySales/${payload.start_date}/${payload.end_date}/`,
+      payload,
+      "get"
+    ),
+  getDistinctPayments: (payload) =>
+    mainRequest(`/distinctPayments/`, payload, "get"),
 
   /* <CUSTOMER> */
   getCustomer: (payload) => mainRequest(`/customer/`, payload, "get"),

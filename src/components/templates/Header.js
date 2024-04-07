@@ -6,15 +6,11 @@ import { LogoutIcon } from "../atoms/Icon";
 
 export const Header = () => {
   const router = useRouter();
-  // const admin = JSON.parse(localStorage.getItem("admin"));
   const admin = 1;
   const changeRole = () => {
-    // localStorage.setItem("role", "user");
-    router.refresh();
     router.push("/");
   };
   const logOut = () => {
-    // localStorage.removeItem("admin");
     router.push("/signin");
   };
 
@@ -24,7 +20,11 @@ export const Header = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between h-[56px] pr-7 bg-white border-solid border-b-[1px] border-slate-300">
+      <div className="flex items-center justify-between h-[56px] px-7 bg-white border-solid border-b-[1px] border-slate-300">
+        <div className="text-2xl flex justify-center items-center font-bold bg-[#f7f9fa] gradient-text ">
+          <Link href="/">TGDD</Link>
+        </div>
+
         <div className="flex justify-end w-full">
           <div className="flex items-center gap-2 mr-5" onClick={logOut}>
             <FaCircleUser className="text-lg" />

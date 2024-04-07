@@ -111,7 +111,7 @@ export const CreateNewsForm = ({ isNew }) => {
 
   return (
     <form onSubmit={handleSubmit(isNew ? handleCreate : handleUpdate)}>
-      <div className="border-b border-blue-400 bg-[#252525] flex justify-between items-center p-5 sticky top-0 z-[1]">
+      <div className="border-b border-blue-400 bg-[#252525] flex justify-between items-center p-5 sticky top-0 z-[20]">
         <p className="text-white text-2xl font-bold ">
           {isNew ? "Create" : "Update"} News
         </p>

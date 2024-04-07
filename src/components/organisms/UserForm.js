@@ -11,13 +11,14 @@ export const UserForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isReload, setIsReload] = useState(false);
   const [dataUpdate, setDataUpdate] = useState();
-  const [isNew, setIsNew] = useState(false);
+  const [dataFilter, setDataFilter] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const result = await GetCustomers();
         setDataAll(result);
+        setDataFilter(result.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -40,7 +41,7 @@ export const UserForm = () => {
   const dataBody = [];
 
   dataBody.push(
-    dataAll?.data.map((item, index) => (
+    dataFilter?.map((item, index) => (
       <tr key={index} className="border-b border-[#bdbdbd]">
         <td className="py-3 px-5  text-center">
           <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
@@ -59,7 +60,7 @@ export const UserForm = () => {
           </p>
         </td>
 
-        <td className="py-3 px-5  text-center  flex justify-center gap-5">
+        <td className="py-3 px-5 text-center">
           <button
             onClick={() => {
               setIsOpen(true);
@@ -75,7 +76,11 @@ export const UserForm = () => {
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      console.log(event.target.value);
+      const inputValue = event.target.value.toLowerCase();
+      const dataFilterName = dataAll?.data.filter((user) =>
+        user.customer_fullname.toLowerCase().includes(inputValue)
+      );
+      setDataFilter(dataFilterName);
     }
   };
 
@@ -86,6 +91,11 @@ export const UserForm = () => {
           type="text"
           placeholder={"Search"}
           onKeyDown={handleKeyDown}
+          onChange={(event) => {
+            if (event.target.value === "") {
+              setDataFilter(dataAll?.data);
+            }
+          }}
         />
       </div>
       <div className="mx-10">

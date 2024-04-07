@@ -1,12 +1,14 @@
 .navbar {
   position: fixed;
-  top: 0px;
-  left: 0.1rem;
-  bottom: 0.1rem;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* top: 55px; */
+  left: 60px;
+  /* bottom: 55px; */
   background: #fff;
-  /* border-radius: 10px; */
+  border-radius: 50px;
   /* padding: 1rem 0; */
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
   /* height: calc(100vh - 6rem); */
   border: 1px solid #bdbdbd;
   background: #ffe6c7;

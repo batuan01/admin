@@ -228,6 +228,44 @@ export const UpdateOrderStatus = async (payload) => {
     console.error("Lỗi khi gọi API:", error);
   }
 };
+export const GetOrdersDetail = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.getOrdersDetail(payload);
+    if (status === 200) {
+      return data;
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+export const GetDailySales = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.getDailySales(payload);
+    if (status === 200) {
+      return data;
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+export const GetDistinctPayments = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.getDistinctPayments(payload);
+    if (status === 200) {
+      return data;
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
 
 /* <CUSTOMER> */
 export const GetCustomers = async (payload) => {

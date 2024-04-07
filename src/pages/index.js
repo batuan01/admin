@@ -1,12 +1,10 @@
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { DashboardForm } from "../components/organisms/DashboardForm";
 
 const Home = () => {
-  const router = useRouter();
   return (
-    <>
-      <div className=""></div>
-    </>
+    <div className="px-10">
+      <DashboardForm />
+    </div>
   );
 };
 export default Home;
