@@ -442,8 +442,8 @@ const CreateProductForm = ({ isNew }) => {
                 <InputFormAdmin
                   register={register("product_ram")}
                   type="text"
-                  placeholder={"Product ram"}
-                  label={"Product Ram"}
+                  placeholder={"ram"}
+                  label={"Ram"}
                 />
                 <InputFormAdmin
                   register={register("hard_drive")}
@@ -456,8 +456,8 @@ const CreateProductForm = ({ isNew }) => {
                 <InputFormAdmin
                   register={register("product_card")}
                   type="text"
-                  placeholder={"Product Card"}
-                  label={"Product Card"}
+                  placeholder={"Pin"}
+                  label={"Pin"}
                 />
                 <InputFormAdmin
                   register={register("desktop")}
