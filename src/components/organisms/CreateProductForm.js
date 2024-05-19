@@ -10,7 +10,6 @@ import { UploadImage } from "../molecules/UploadImage";
 import { useEffect, useState } from "react";
 import { FaPlusCircle } from "react-icons/fa";
 import { ConvertFirebase } from "../../utils/firebase";
-import { Select } from "../atoms/Select";
 import { ComboBoxSelect } from "../atoms/ComboBoxSelect";
 import {
   DeleteProductColor,
@@ -431,7 +430,7 @@ const CreateProductForm = ({ isNew }) => {
                   register={register("product_sale")}
                   type="text"
                   placeholder={"Product Sale"}
-                  label={"Product Sale"}
+                  label={"Product Sale (%)"}
                 />
               </div>
             </div>

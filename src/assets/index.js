@@ -89,6 +89,12 @@ const SERVICES = {
       payload,
       "get"
     ),
+  getProductsSoldByDay: (payload) =>
+    mainRequest(
+      `/productsSold/${payload.start_date}/${payload.end_date}/${payload.category_id}/`,
+      payload,
+      "get"
+    ),
   getDistinctPayments: (payload) =>
     mainRequest(`/distinctPayments/`, payload, "get"),
 

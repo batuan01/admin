@@ -3,19 +3,18 @@ import { FaBell, FaCircleUser } from "react-icons/fa6";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { LogoutIcon } from "../atoms/Icon";
+import Cookies from "js-cookie";
 
 export const Header = () => {
   const router = useRouter();
-  const admin = 1;
+
   const changeRole = () => {
     router.push("/");
-  };
-  const logOut = () => {
-    router.push("/signin");
   };
 
   const handleLogout = () => {
     router.push("/signin");
+    Cookies.remove("admin");
   };
 
   return (
@@ -26,9 +25,8 @@ export const Header = () => {
         </div>
 
         <div className="flex justify-end w-full">
-          <div className="flex items-center gap-2 mr-5" onClick={logOut}>
+          <div className="flex items-center gap-2 mr-5">
             <FaCircleUser className="text-lg" />
-            {admin?.admin_name}
           </div>
           <button
             className="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-10 max-w-[40px] h-10 max-h-[40px] rounded-lg text-xs text-blue-gray-500 hover:bg-[#6a778e] hover:text-white button-notification"

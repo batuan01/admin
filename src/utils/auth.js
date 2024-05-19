@@ -15,7 +15,9 @@ export const LoginAdmin = async (payload) => {
         admin_role: data.admin.admin_role,
       };
 
-      Cookies.set("admin", dataAdmin);
+      let jsonString = JSON.stringify(dataAdmin);
+
+      Cookies.set("admin", jsonString);
       Notification.success("Success !");
     } else {
       logError(data);
@@ -244,6 +246,19 @@ export const GetOrdersDetail = async (payload) => {
 export const GetDailySales = async (payload) => {
   try {
     const { data, status } = await SERVICES.getDailySales(payload);
+    if (status === 200) {
+      return data;
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
+export const GetProductsSoldByDay = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.getProductsSoldByDay(payload);
     if (status === 200) {
       return data;
     } else {

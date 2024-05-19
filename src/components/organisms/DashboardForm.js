@@ -11,11 +11,18 @@ import {
   Tooltip,
   Legend,
   ArcElement,
+  BarElement,
 } from "chart.js";
-import { Line, Doughnut } from "react-chartjs-2";
-import { GetDailySales, GetDistinctPayments } from "../../utils/auth";
+import { Line, Doughnut, Bar } from "react-chartjs-2";
+import {
+  GetDailySales,
+  GetDistinctPayments,
+  GetProductsSoldByDay,
+  ListCategories,
+} from "../../utils/auth";
 import { formatDate } from "../atoms/FormatDateTime";
 import { DateForm } from "../molecules/Date";
+import { Select, pushData } from "../atoms/Select";
 
 ChartJS.register(
   CategoryScale,
@@ -25,14 +32,14 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement
 );
 
 export const DashboardForm = () => {
   const [dataAll, setDataAll] = useState();
   const [allDataPayment, setAllDataPayment] = useState();
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [allDataProductsSold, setAllDataProductsSold] = useState();
 
   const today = new Date();
   // Lấy ngày đầu tiên của tháng hiện tại
@@ -41,9 +48,33 @@ export const DashboardForm = () => {
   // Lấy ngày hiện tại
   const formattedToday = formatDate(today);
 
+  const [startDate, setStartDate] = useState(formattedFirstDayOfMonth);
+  const [endDate, setEndDate] = useState(formattedToday);
+
+  const [startDateProductsSold, setStartDateProductsSold] = useState(
+    formattedFirstDayOfMonth
+  );
+  const [endDateProductsSold, setEndDateProductsSold] =
+    useState(formattedToday);
+
+  const [dataCategory, setDataCategory] = useState();
+  const [selectedCategory, setSelectedCategory] = useState();
+
   useEffect(() => {
-    setStartDate(formattedFirstDayOfMonth);
-    setEndDate(formattedToday);
+    const fetchData = async () => {
+      try {
+        const result = await ListCategories();
+        setDataCategory(result);
+
+        setSelectedCategory({
+          name: result[0].category_name,
+          id: result[0].category_id,
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -72,6 +103,26 @@ export const DashboardForm = () => {
     fetchData();
     fetchDataPayment();
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    const fetchDataProductsSold = async () => {
+      try {
+        const payload = {
+          start_date: startDateProductsSold ?? formattedFirstDayOfMonth,
+          end_date: endDateProductsSold ?? formattedToday,
+          category_id: selectedCategory?.id,
+        };
+        const result = await GetProductsSoldByDay(payload);
+        setAllDataProductsSold(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (selectedCategory) {
+      fetchDataProductsSold();
+    }
+  }, [startDateProductsSold, endDateProductsSold, selectedCategory]);
 
   const options = {
     responsive: true,
@@ -116,6 +167,37 @@ export const DashboardForm = () => {
     ],
   };
 
+  const dataBar = {
+    labels: allDataProductsSold?.map((o) => o.product_name),
+    datasets: [
+      {
+        label: "Number of products sold",
+        backgroundColor: "rgba(0, 255, 0, 0.2)",
+        borderColor: "rgb(0, 255, 0)",
+        borderWidth: 1,
+        data: allDataProductsSold?.map((o) => o.total_sales_quantity),
+      },
+    ],
+  };
+
+  const optionsBar = {
+    plugins: {
+      title: {
+        display: true,
+      },
+    },
+  };
+  const dataSelect = dataCategory?.map((item) => ({
+    name: item.category_name,
+    id: item.category_id,
+  }));
+
+  let ContentSelect = [];
+  pushData({
+    arrayForm: ContentSelect,
+    data: dataSelect,
+  });
+
   return (
     <div>
       <div className="py-5 border-b border-blue-300 border-solid">
@@ -152,6 +234,43 @@ export const DashboardForm = () => {
           <div className="p-5 w-full h-full">
             <Doughnut data={dataPayment} />
           </div>
+        </div>
+      </div>
+
+      <div className="rounded-xl shadow-xl border-solid border-[#C7C8CC] border bg-white w-full mt-10">
+        <div className="p-5 font-semibold border-solid border-[#C7C8CC] border-b flex justify-between items-center">
+          <p>Statistics of best-selling products</p>
+          <div className="flex gap-5 items-center">
+            <div className="flex items-center gap-2">
+              Category:
+              <Select
+                selected={selectedCategory}
+                content={ContentSelect}
+                onChange={(value) => {
+                  setSelectedCategory(value);
+                }}
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
+              From:
+              <DateForm
+                selectedDate={startDateProductsSold}
+                setSelectedDate={setStartDateProductsSold}
+              />
+            </div>
+            <div className="flex items-center gap-2">
+              To:
+              <DateForm
+                selectedDate={endDateProductsSold}
+                setSelectedDate={setEndDateProductsSold}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="p-5 w-full h-full">
+          <Bar data={dataBar} options={optionsBar} />
         </div>
       </div>
     </div>

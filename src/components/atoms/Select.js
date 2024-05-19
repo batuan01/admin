@@ -9,8 +9,8 @@ export function Select({ selected, onChange, content }) {
     <Listbox value={selected} onChange={onChange}>
       {({ open }) => (
         <>
-          <div className="relative mt-2 w-full h-full">
-            <Listbox.Button className="relative h-full cursor-default bg-inherit py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm border-t-0 border-x-0 border-b-[1px] border-solid border-black focus:outline-none sm:text-sm sm:leading-6 min-w-[150px] min-h-[40px] w-full hover:cursor-pointer">
+          <div className="relative w-full h-full pt-1">
+            <Listbox.Button className="relative h-full cursor-default bg-inherit py-1.5 pr-10 text-left text-gray-900 shadow-sm border-[1px] border-solid border-black focus:outline-none sm:text-sm sm:leading-6 min-w-[150px] min-h-[40px] w-full hover:cursor-pointer">
               <span className="flex items-center">
                 <span className="ml-3 block truncate">{selected?.name}</span>
               </span>

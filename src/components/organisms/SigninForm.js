@@ -3,6 +3,7 @@ import { InputForm } from "../atoms/Input";
 import { Google } from "../atoms/Icon";
 import { LoginAdmin } from "../../utils/auth";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 export const SigninForm = () => {
   const {
@@ -23,7 +24,21 @@ export const SigninForm = () => {
     };
     try {
       await LoginAdmin(loginData);
-      router.push("/");
+      
+      const admin = Cookies.get("admin");
+
+      let objAdmin;
+      if (admin) {
+        objAdmin = JSON.parse(admin);
+      }
+      switch (Number(objAdmin.admin_role)) {
+        case 0:
+          router.push("/");
+          break;
+        case 1:
+          router.push("/product");
+          break;
+      }
     } catch (error) {
       console.log(error);
     }
@@ -77,15 +92,15 @@ export const SigninForm = () => {
               )}
             </div>
 
-            <div className="flex justify-center w-full items-center mt-10">
+            {/* <div className="flex justify-center w-full items-center mt-10">
               <div>
                 <button className="flex items-center justify-center py-2 px-20 bg-white hover:bg-gray-200 focus:ring-blue-500 focus:ring-offset-blue-200 text-gray-700 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg hover:bg-slate-400 hover:text-white">
                   <Google className={"w-6"} />
                   <span className="ml-2">Sign in with Google</span>
                 </button>
               </div>
-            </div>
-            <div className="mt-5">
+            </div> */}
+            <div className="mt-5 w-full">
               <button
                 className="py-2 px-4 bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
                 type="submit"
