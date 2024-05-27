@@ -68,6 +68,12 @@ const SERVICES = {
       payload,
       "delete"
     ),
+  deleteProductCapacity: (payload) =>
+    mainRequest(
+      `/products/capacity/${payload.product_capacity_id}/`,
+      payload,
+      "delete"
+    ),
 
   /* <GALLERIES> */
   listGalleries: (payload) =>

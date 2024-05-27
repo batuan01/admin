@@ -61,6 +61,9 @@ export const OrderDetailForm = () => {
                   <p className="text-sm text-slate-400">
                     Color: {getColorName(item.color_id)}
                   </p>
+                  <p className="text-sm text-slate-400">
+                    Storage: {getStorageName(item.storage_capacity_id)}
+                  </p>
                 </div>
               </div>
               <p className="text-base font-semibold">
@@ -98,10 +101,20 @@ export const OrderDetailForm = () => {
     const payload = {
       order_id: query.id,
       order_status: orderStatus,
+      order_reason: 0,
     };
     await UpdateOrderStatus(payload);
     Notification.success("Updated status successfully!");
   };
+
+  //lấy ra storage mà sản phẩm có
+  const getStorageName = (storageId) => {
+    const storage = dataAll?.storage?.find(
+      (item) => item.storage_capacity_id === storageId
+    );
+    return storage ? storage.total_capacity : "";
+  };
+
 
   return (
     <>

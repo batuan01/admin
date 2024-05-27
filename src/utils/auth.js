@@ -167,6 +167,18 @@ export const DeleteProductColor = async (payload) => {
   }
 };
 
+export const DeleteProductCapacity = async (payload) => {
+  try {
+    const { data, status } = await SERVICES.deleteProductCapacity(payload);
+    if (status === 200) {
+    } else {
+      logError(data);
+    }
+  } catch (error) {
+    console.error("Lỗi khi gọi API:", error);
+  }
+};
+
 /* <GALLERY> */
 export const ListGalleries = async (payload) => {
   try {

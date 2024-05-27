@@ -6,7 +6,7 @@ import { ConfirmDelete } from "../molecules/ConfirmDelete";
 import Notification from "../atoms/Notification";
 import { InputSearch } from "../atoms/Input";
 import { formatDateTime } from "../atoms/FormatDateTime";
-import { ORDER_STATUS, PAYMENT_STATUS } from "../../constants/common";
+import { ORDER_STATUS, PAYMENT_STATUS, ReasonForCancellation } from "../../constants/common";
 import { FaEye } from "react-icons/fa";
 import { Select, pushData } from "../atoms/Select";
 
@@ -52,9 +52,11 @@ export const OrderForm = () => {
     "Customer Name",
     "Order Date",
     "Payments",
+    "Order Reason",
     "Order Status",
     "Action",
   ];
+  console.log(dataFilter);
   const dataBody = dataFilter?.map((item, index) => (
     <tr key={index} className="border-b border-[#bdbdbd]">
       <td className="py-3 px-5  text-center">
@@ -78,6 +80,14 @@ export const OrderForm = () => {
           style={{ color: `${getPaymentsLabel(item.payment_id).color}` }}
         >
           {getPaymentsLabel(item.payment_id).label}
+        </p>
+      </td>
+      <td className="py-3 px-5  text-center ">
+        <p className="block antialiased font-sans text-sm leading-normal font-semibold">
+          {
+            ReasonForCancellation.find((i, k) => item.order_reason === k + 1)
+              ?.name
+          }
         </p>
       </td>
       <td className="py-3 px-5 text-center ">
