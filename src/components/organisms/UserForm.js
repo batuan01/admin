@@ -37,7 +37,7 @@ export const UserForm = () => {
     Notification.success("Delete customer successfully!");
   };
 
-  const dataThead = ["No.", "Name", "Phone", "Action"];
+  const dataThead = ["No.", "Name", "Phone", "Address", "Action"];
   const dataBody = [];
 
   dataBody.push(
@@ -57,6 +57,12 @@ export const UserForm = () => {
         <td className="py-3 px-5  text-center ">
           <p className="block antialiased font-sans text-sm leading-normal font-semibold">
             {item.customer_phone}
+          </p>
+        </td>
+
+        <td className="py-3 px-5  text-center ">
+          <p className="block antialiased font-sans text-sm leading-normal font-semibold">
+            {item.customer_address}
           </p>
         </td>
 

@@ -62,7 +62,14 @@ export const CouponForm = () => {
     Notification.success("Delete coupon successfully!");
   };
 
-  const dataThead = ["No.", "Code", "Discount", "Expiry Date", "Action"];
+  const dataThead = [
+    "No.",
+    "Code",
+    "Discount",
+    "Quantity",
+    "Expiry Date",
+    "Action",
+  ];
   const dataBody = [];
 
   dataBody.push(
@@ -81,6 +88,11 @@ export const CouponForm = () => {
         <td className="py-3 px-5  text-center ">
           <p className="block antialiased font-sans text-sm leading-normal font-semibold">
             {FormatPrice(item.coupon_discount)}
+          </p>
+        </td>
+        <td className="py-3 px-5  text-center ">
+          <p className="block antialiased font-sans text-sm leading-normal font-semibold">
+            {item.coupon_quantity}
           </p>
         </td>
         <td className="py-3 px-5  text-center ">
@@ -117,6 +129,7 @@ export const CouponForm = () => {
       coupon_code: data.coupon_code,
       coupon_discount: data.coupon_discount,
       coupon_expiry_date: selectedDate,
+      coupon_quantity: data.coupon_quantity,
     };
     await PostCoupon(dataSend);
     Notification.success("Create coupon successfully!");
@@ -125,6 +138,7 @@ export const CouponForm = () => {
     reset({
       coupon_code: null,
       coupon_discount: null,
+      coupon_quantity: null,
     });
   };
   const handleUpdate = async (data) => {
@@ -133,6 +147,7 @@ export const CouponForm = () => {
       coupon_code: data.coupon_code,
       coupon_discount: data.coupon_discount,
       coupon_expiry_date: selectedDate,
+      coupon_quantity: data.coupon_quantity,
     };
     await UpdateCoupon(dataSend);
     Notification.success("Update coupon successfully!");
@@ -141,6 +156,7 @@ export const CouponForm = () => {
     reset({
       coupon_code: null,
       coupon_discount: null,
+      coupon_quantity: null,
     });
   };
 
@@ -160,29 +176,44 @@ export const CouponForm = () => {
         {isNew ? "Create" : "Update"} Coupon
       </p>
       <div className="flex gap-5 items-center justify-between">
-        <div className="w-3/4">
+        <div className="flex gap-5 items-center justify-between w-2/3">
+          <div className="w-1/4">
+            <ButtonModal
+              title={"Random"}
+              type={"button"}
+              sizeSm={true}
+              onClick={randomText}
+              textBlack
+              className={
+                "mt-5 bg-blue-200 text-[#1B84FF] hover:bg-[#1B84FF] hover:text-white w-full"
+              }
+            />
+          </div>
+          <div className="w-3/4">
+            <InputFormAdmin
+              register={register("coupon_code", {
+                required: "Coupon code cannot be left blank",
+              })}
+              type="text"
+              placeholder={"Coupon code"}
+              label={"Coupon code"}
+              required={true}
+              errors={errors}
+              name={"coupon_code"}
+            />
+          </div>
+        </div>
+        <div className="w-1/3">
           <InputFormAdmin
-            register={register("coupon_code", {
-              required: "Coupon code cannot be left blank",
+            register={register("coupon_quantity", {
+              required: "Coupon quantity cannot be left blank",
             })}
             type="text"
-            placeholder={"Coupon code"}
-            label={"Coupon code"}
+            placeholder={"Coupon quantity"}
+            label={"Coupon quantity"}
             required={true}
             errors={errors}
-            name={"coupon_code"}
-          />
-        </div>
-        <div className="w-1/4">
-          <ButtonModal
-            title={"Random"}
-            type={"button"}
-            sizeSm={true}
-            onClick={randomText}
-            textBlack
-            className={
-              "mt-5 bg-blue-200 text-[#1B84FF] hover:bg-[#1B84FF] hover:text-white w-full"
-            }
+            name={"coupon_quantity"}
           />
         </div>
       </div>
@@ -234,12 +265,14 @@ export const CouponForm = () => {
       reset({
         coupon_code: null,
         coupon_discount: null,
+        coupon_quantity: null,
       });
       setSelectedDate(getCurrentDate());
     } else {
       reset({
         coupon_code: dataUpdate?.coupon_code || "",
         coupon_discount: dataUpdate?.coupon_discount || "",
+        coupon_quantity: dataUpdate?.coupon_quantity || "",
       });
       setSelectedDate(dataUpdate?.coupon_expiry_date);
     }
@@ -250,6 +283,7 @@ export const CouponForm = () => {
     reset({
       coupon_code: null,
       coupon_discount: null,
+      coupon_quantity: null,
     });
   };
 
