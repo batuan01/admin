@@ -56,7 +56,7 @@ export const OrderForm = () => {
     "Order Status",
     "Action",
   ];
-  console.log(dataFilter);
+
   const dataBody = dataFilter?.map((item, index) => (
     <tr key={index} className="border-b border-[#bdbdbd]">
       <td className="py-3 px-5  text-center">

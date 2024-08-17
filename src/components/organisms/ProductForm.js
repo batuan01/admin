@@ -71,7 +71,15 @@ export const ProductForm = () => {
     Notification.success("Updated status successfully!");
   };
 
-  const dataThead = ["No.", "Name", "Sale", "Status", "Gallery", "Action"];
+  const dataThead = [
+    "No.",
+    "Image",
+    "Name",
+    "Sale",
+    "Status",
+    "Gallery",
+    "Action",
+  ];
   const dataBody = [];
 
   dataBody.push(
@@ -82,9 +90,13 @@ export const ProductForm = () => {
             {index + 1}
           </p>
         </td>
-        <td className="py-3 px-5  text-center ">
-          <p className="antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold flex gap-2 items-center justify-center">
+        <td className="py-3 px-5 text-center flex justify-center">
+          <p className="block antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
             <img src={item.product_image} className="h-10 w-auto" />
+          </p>
+        </td>
+        <td className="py-3 px-5 text-left">
+          <p className="antialiased font-sans text-sm leading-normal text-blue-gray-900 font-semibold">
             {item.product_name}
           </p>
         </td>
